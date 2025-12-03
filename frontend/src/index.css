@@ -1,0 +1,26 @@
+@import "tailwindcss";
+/*
+:root {
+--primary: #4C1D95;       
+  --secondary: #FBBF24;     
+  --input-bg: #5B21B6;     
+  --text-color: #FDF6E3;    
+  --hover-primary: #6D28D9; 
+  --neutral: #3F3F46;      
+}
+
+
+.text-primary { color: var(--primary); }
+.text-secondary { color: var(--secondary); }
+.text-text { color: var(--text-color); }
+
+.bg-primary { background-color: var(--primary); }
+.bg-secondary { background-color: var(--secondary); }
+.bg-input { background-color: var(--input-bg); }
+
+.border-primary { border-color: var(--primary); }
+.border-secondary { border-color: var(--secondary); }
+
+.placeholder-primary::placeholder { color: var(--primary); }
+.placeholder-secondary::placeholder { color: var(--secondary); }
+.placeholder-text::placeholder { color: var(--text-color); }*/
