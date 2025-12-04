@@ -50,7 +50,7 @@ namespace backend.Services
             {
                 Title=game.Title,
                 Description=game.Description
-            }, game.AuthorId,game.PublisherId);
+            }, game.MechanicIds, game.AuthorId,game.PublisherId);
         }
 
         public async Task<Game> UpdateGame(string id, GameDTO game)

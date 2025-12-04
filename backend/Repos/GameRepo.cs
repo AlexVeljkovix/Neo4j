@@ -19,9 +19,11 @@ namespace backend.Repos
             await using var session = _driver.AsyncSession();
             var cursor = await session.RunAsync(@"
                 MATCH (g:Game)
-                OPTIONAL MATCH (g)<-[:CREATED]-(a:Author)
-                OPTIONAL MATCH (g)<-[:PUBLISHED]-(p:Publisher)
-                RETURN g, a, p
+                MATCH (g)<-[:CREATED]-(a:Author)
+                MATCH (g)<-[:PUBLISHED]-(p:Publisher)
+                OPTIONAL MATCH (g)-[:HAS_MECHANIC]->(m:Mechanic)
+                RETURN g, a, p, collect(m) AS mechanics
+
             ");
 
             await cursor.ForEachAsync(record =>
@@ -29,12 +31,12 @@ namespace backend.Repos
                 var gNode = record["g"].As<INode>();
                 var aNode = record["a"]?.As<INode>();
                 var pNode = record["p"]?.As<INode>();
-
-                games.Add(new Game
+                Game game = new Game
                 {
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
                         Id = aNode.Properties["Id"].As<string>(),
@@ -47,7 +49,16 @@ namespace backend.Repos
                         Id = pNode.Properties["Id"].As<string>(),
                         Name = pNode.Properties["Name"].As<string>()
                     }
-                });
+                };
+                foreach (var mNode in record["mechanics"].As<List<INode>>())
+                {
+                    game.Mechanics.Add(new Mechanic
+                    {
+                        Id = mNode.Properties["Id"].As<string>(),
+                        Name = mNode.Properties["Name"].As<string>()
+                    });
+                }
+                games.Add(game);
             });
 
             return games;
@@ -55,27 +66,29 @@ namespace backend.Repos
 
         public async Task<Game> GetGameById(string id)
         {
-            List<Game> games = new List<Game>();
+            
             await using var session = _driver.AsyncSession();
-
             var cursor = await session.RunAsync(@"
                 MATCH (g:Game {Id:$id})
-                OPTIONAL MATCH (g)<-[:CREATED]-(a:Author)
-                OPTIONAL MATCH (g)<-[:PUBLISHED]-(p:Publisher)
-                RETURN g, a, p
-            ", new { id });
+                MATCH (g)<-[:CREATED]-(a:Author)
+                MATCH (g)<-[:PUBLISHED]-(p:Publisher)
+                WITH g, a, p
+                MATCH (g)-[:HAS_MECHANIC]->(m:Mechanic)
+                RETURN g, a, p, collect(m) AS mechanics
+            ", new {id});
 
+            Game game = null;
             await cursor.ForEachAsync(record =>
             {
                 var gNode = record["g"].As<INode>();
-                var aNode = record["a"]?.As<INode>();
-                var pNode = record["p"]?.As<INode>();
-
-                games.Add(new Game
+                var aNode = record["a"].As<INode>();
+                var pNode = record["p"].As<INode>();
+                game = new Game
                 {
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
                         Id = aNode.Properties["Id"].As<string>(),
@@ -88,35 +101,45 @@ namespace backend.Repos
                         Id = pNode.Properties["Id"].As<string>(),
                         Name = pNode.Properties["Name"].As<string>()
                     }
-                });
+                };
+                foreach (var mNode in record["mechanics"].As<List<INode>>())
+                {
+                    game.Mechanics.Add(new Mechanic
+                    {
+                        Id = mNode.Properties["Id"].As<string>(),
+                        Name = mNode.Properties["Name"].As<string>()
+                    });
+                }
+ 
             });
 
-            return games.FirstOrDefault();
+            return game;
         }
 
         public async Task<IEnumerable<Game>> GetGameByTitle(string title)
         {
             List<Game> games = new List<Game>();
             await using var session = _driver.AsyncSession();
-
             var cursor = await session.RunAsync(@"
                 MATCH (g:Game {Title:$title})
-                OPTIONAL MATCH (g)<-[:CREATED]-(a:Author)
-                OPTIONAL MATCH (g)<-[:PUBLISHED]-(p:Publisher)
-                RETURN g, a, p
-            ", new { title });
+                MATCH (g)<-[:CREATED]-(a:Author)
+                MATCH (g)<-[:PUBLISHED]-(p:Publisher)
+                WITH g, a, p
+                MATCH (g)-[:HAS_MECHANIC]->(m:Mechanic)
+                RETURN g, a, p, collect(m) AS mechanics
+            ", new {title});
 
             await cursor.ForEachAsync(record =>
             {
                 var gNode = record["g"].As<INode>();
                 var aNode = record["a"]?.As<INode>();
                 var pNode = record["p"]?.As<INode>();
-
-                games.Add(new Game
+                Game game = new Game
                 {
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
                         Id = aNode.Properties["Id"].As<string>(),
@@ -129,41 +152,59 @@ namespace backend.Repos
                         Id = pNode.Properties["Id"].As<string>(),
                         Name = pNode.Properties["Name"].As<string>()
                     }
-                });
+                };
+                foreach (var mNode in record["mechanics"].As<List<INode>>())
+                {
+                    game.Mechanics.Add(new Mechanic
+                    {
+                        Id = mNode.Properties["Id"].As<string>(),
+                        Name = mNode.Properties["Name"].As<string>()
+                    });
+                }
+                games.Add(game);
             });
 
             return games;
         }
 
-        public async Task<Game> CreateGame(Game game, string authorId, string publisherId)
+        public async Task<Game> CreateGame(Game game, List<string> mechanicIds, string authorId, string publisherId)
         {
             await using var session = _driver.AsyncSession();
+
             await session.RunAsync(@"
-                CREATE (g:Game {Id:$Id})
-                SET g.Title = $Title,
-                    g.Description = $Description
+            CREATE (g:Game {Id:$Id})
+            SET g.Title = $Title,
+                g.Description = $Description
+            WITH g
+            MATCH (a:Author {Id:$authorId})
+            MERGE (a)-[:CREATED]->(g)
+            WITH g
+            MATCH (p:Publisher {Id:$publisherId})
+            MERGE (p)-[:PUBLISHED]->(g)
+        ",
+                new
+                {
+                    game.Id,
+                    game.Title,
+                    game.Description,
+                    authorId,
+                    publisherId
+                });
 
-                WITH g
-                MATCH (a:Author {Id:$authorId})
-                MERGE (a)-[:CREATED]->(g)
-
-                WITH g
-                MATCH (p:Publisher {Id:$publisherId})
-                MERGE (p)-[:PUBLISHED]->(g)
-            ",
-            new
+            foreach (var mechanicId in mechanicIds)
             {
-                game.Id,
-                game.Title,
-                game.Description,
-                authorId,
-                publisherId
-            });
+                await session.RunAsync(@"
+            MATCH (g:Game {Id:$gameId})
+            MATCH (m:Mechanic {Id:$mechanicId})
+            MERGE (g)-[:HAS_MECHANIC]->(m)
+            ", new { gameId = game.Id, mechanicId });
+            }
 
             return game;
         }
 
-       
+
+
         public async Task<Game> UpdateGame(Game game)
         {
             await using var session = _driver.AsyncSession();
@@ -174,11 +215,11 @@ namespace backend.Repos
                     g.Description = $Description
 
                 WITH g
-                OPTIONAL MATCH (g)<-[r1:CREATED]-()
+                MATCH (g)<-[r1:CREATED]-()
                 DELETE r1
 
                 WITH g
-                OPTIONAL MATCH (g)<-[r2:PUBLISHED]-()
+                MATCH (g)<-[r2:PUBLISHED]-()
                 DELETE r2
 
                 WITH g
@@ -188,6 +229,10 @@ namespace backend.Repos
                 WITH g
                 MATCH (p:Publisher {Id:$PublisherId})
                 MERGE (p)-[:PUBLISHED]->(g)
+
+                WITH g
+                OPTIONAL MATCH (g)-[r3:HAS_MECHANIC]->()
+                DELETE r3
             ",
             new
             {
@@ -197,6 +242,15 @@ namespace backend.Repos
                 AuthorId = game.Author.Id,
                 PublisherId = game.Publisher.Id
             });
+            foreach(var mechanic in game.Mechanics)
+            {
+                await session.RunAsync(@"
+                MATCH (g:Game {Id:$gameId})
+                MATCH (m:Mechanic {Id:$mechanicId})
+                MERGE (g)-[:HAS_MECHANIC]->(m)
+            ", new { gameId = game.Id, mechanicId =mechanic.Id});
+            }
+           
 
             return game;
         }
@@ -213,11 +267,12 @@ namespace backend.Repos
         {
             List<Game> games = new List<Game>();
             await using var session = _driver.AsyncSession();
-
             var cursor = await session.RunAsync(@"
                 MATCH (a:Author {Id:$authorId})-[:CREATED]->(g:Game)
-                OPTIONAL MATCH (g)<-[:PUBLISHED]-(p:Publisher)
-                RETURN g, a, p
+                MATCH (g)<-[:PUBLISHED]-(p:Publisher)
+                WITH g, a, p
+                MATCH (g)-[:HAS_MECHANIC]->(m:Mechanic)
+                RETURN g, a, p, collect(m) AS mechanics
             ", new { authorId });
 
             await cursor.ForEachAsync(record =>
@@ -225,12 +280,12 @@ namespace backend.Repos
                 var gNode = record["g"].As<INode>();
                 var aNode = record["a"]?.As<INode>();
                 var pNode = record["p"]?.As<INode>();
-
-                games.Add(new Game
+                Game game = new Game
                 {
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
                         Id = aNode.Properties["Id"].As<string>(),
@@ -243,7 +298,16 @@ namespace backend.Repos
                         Id = pNode.Properties["Id"].As<string>(),
                         Name = pNode.Properties["Name"].As<string>()
                     }
-                });
+                };
+                foreach (var mNode in record["mechanics"].As<List<INode>>())
+                {
+                    game.Mechanics.Add(new Mechanic
+                    {
+                        Id = mNode.Properties["Id"].As<string>(),
+                        Name = mNode.Properties["Name"].As<string>()
+                    });
+                }
+                games.Add(game);
             });
 
             return games;
@@ -253,11 +317,12 @@ namespace backend.Repos
         {
             List<Game> games = new List<Game>();
             await using var session = _driver.AsyncSession();
-
             var cursor = await session.RunAsync(@"
                 MATCH (p:Publisher {Id:$publisherId})-[:PUBLISHED]->(g:Game)
-                OPTIONAL MATCH (g)<-[:CREATED]-(a:Author)
-                RETURN g, a, p
+                MATCH (g)<-[:CREATED]-(a:Author)
+                WITH g, a, p
+                MATCH (g)-[:HAS_MECHANIC]->(m:Mechanic)
+                RETURN g, a, p, collect(m) AS mechanics
             ", new { publisherId });
 
             await cursor.ForEachAsync(record =>
@@ -265,12 +330,12 @@ namespace backend.Repos
                 var gNode = record["g"].As<INode>();
                 var aNode = record["a"]?.As<INode>();
                 var pNode = record["p"]?.As<INode>();
-
-                games.Add(new Game
+                Game game = new Game
                 {
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
                         Id = aNode.Properties["Id"].As<string>(),
@@ -283,7 +348,16 @@ namespace backend.Repos
                         Id = pNode.Properties["Id"].As<string>(),
                         Name = pNode.Properties["Name"].As<string>()
                     }
-                });
+                };
+                foreach (var mNode in record["mechanics"].As<List<INode>>())
+                {
+                    game.Mechanics.Add(new Mechanic
+                    {
+                        Id = mNode.Properties["Id"].As<string>(),
+                        Name = mNode.Properties["Name"].As<string>()
+                    });
+                }
+                games.Add(game);
             });
 
             return games;
@@ -298,7 +372,7 @@ namespace backend.Repos
                 MATCH (g:Game)-[:HAS_MECHANIC]->(m:Mechanic {Id:$mechanicsId})
                 OPTIONAL MATCH (g)<-[:CREATED]-(a:Author)
                 OPTIONAL MATCH (g)<-[:PUBLISHED]-(p:Publisher)
-                RETURN g, a, p
+                RETURN g, a, p, collect(m) AS mechanics
             ", new { mechanicsId });
 
             await cursor.ForEachAsync(record =>
@@ -307,11 +381,13 @@ namespace backend.Repos
                 var aNode = record["a"]?.As<INode>();
                 var pNode = record["p"]?.As<INode>();
 
-                games.Add(new Game
+                Game game = null;
+                game = new Game
                 {
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
                         Id = aNode.Properties["Id"].As<string>(),
@@ -324,7 +400,16 @@ namespace backend.Repos
                         Id = pNode.Properties["Id"].As<string>(),
                         Name = pNode.Properties["Name"].As<string>()
                     }
-                });
+                };
+                foreach(var mechanic in record["mechanics"].As<List<INode>>())
+                {
+                    game.Mechanics.Add( new Mechanic
+                    {
+                        Id = mechanic.Properties["Id"].As<string>(),
+                        Name = mechanic.Properties["Name"].As<string>()
+                    });
+                }
+                games.Add(game) ;
             });
 
             return games;

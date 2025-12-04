@@ -12,7 +12,10 @@ export async function Post(endpoint, body) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+  if (!res.ok) {
+    console.log(body);
+    throw new Error(`HTTP error! Status: ${res.status}`);
+  }
   return res.json();
 }
 

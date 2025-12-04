@@ -6,7 +6,7 @@ namespace backend.Repos
         Task<IEnumerable<Game>> GetAllGames();
         Task<Game> GetGameById(string id);
         Task<IEnumerable<Game>> GetGameByTitle(string title);
-        Task<Game> CreateGame(Game game, string authorId, string publisherId);
+        Task<Game> CreateGame(Game game, List<string> mechanicIds, string authorId, string publisherId);
         Task<Game> UpdateGame(Game game);
         Task<Game> DeleteGame(string id);
 

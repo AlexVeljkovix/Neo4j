@@ -32,3 +32,4 @@ D:\Fakultet\IV Godina\Napredne baze podataka\Projekti\Neo4j\backend\obj\Debug\ne
 D:\Fakultet\IV Godina\Napredne baze podataka\Projekti\Neo4j\backend\obj\Debug\net8.0\backend.pdb
 D:\Fakultet\IV Godina\Napredne baze podataka\Projekti\Neo4j\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
 D:\Fakultet\IV Godina\Napredne baze podataka\Projekti\Neo4j\backend\obj\Debug\net8.0\ref\backend.dll
+D:\Fakultet\IV Godina\Napredne baze podataka\Projekti\Neo4j\backend\obj\Debug\net8.0\backend.sourcelink.json

@@ -6,7 +6,7 @@
         public string Title { get; set; } 
 
         public string Description { get; set; }
-        public List<Mechanic> Mechanics { get; set; } = new();
+        public List<Mechanic> Mechanics { get; set; } 
         public Author Author { get; set; }
         public Publisher Publisher { get; set; }
     }
