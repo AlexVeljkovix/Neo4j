@@ -1,62 +1,112 @@
-import React, { useState } from "react";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../assets/logo.png";
+import SearchBar from "./SearchBar";
+import { useLocation } from "react-router-dom";
 
-const Navbar = () => {
-  const [searchType, setSearchType] = useState("Games");
+const navigation = [
+  { name: "Igre", href: "/games" },
+  { name: "Autori", href: "/authors" },
+  { name: "Izdavaci", href: "/publishers" },
+  { name: "Iznajmljivanje", href: "/rentals" },
+];
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
+export default function Navbar() {
+  const location = useLocation();
 
   return (
-    <header className="bg-primary py-3 px-6 shadow-md">
-      <div className="flex items-center justify-between">
-        {/* Levo */}
-        <div className="flex items-center gap-6">
-          <img src={logo} alt="Logo" className="w-12" />
-          <div className="text-2xl text-text font-sans font-bold">
-            Boardgame Cafe
+    <Disclosure as="nav" className="relative bg-gray-800">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div className="relative flex h-16 items-center justify-between">
+          {/* Mobile menu button */}
+          <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500">
+              <span className="absolute -inset-0.5" />
+              <span className="sr-only">Open main menu</span>
+              <Bars3Icon
+                aria-hidden="true"
+                className="block size-6 group-data-open:hidden"
+              />
+              <XMarkIcon
+                aria-hidden="true"
+                className="hidden size-6 group-data-open:block"
+              />
+            </DisclosureButton>
+          </div>
+
+          {/* Logo + Desktop navigation */}
+          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+            <div className="flex shrink-0 items-center">
+              <img
+                alt="Your Company"
+                src={logo}
+                className="h-8 w-auto hidden sm:block"
+              />
+            </div>
+
+            <div className="hidden sm:ml-6 sm:block">
+              <div className="flex space-x-4">
+                {navigation.map((item) => {
+                  const isActive = location.pathname === item.href;
+
+                  return (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className={classNames(
+                        isActive
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-white/5 hover:text-white",
+                        "rounded-md px-3 py-2 text-sm font-medium"
+                      )}
+                    >
+                      {item.name}
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Search */}
+          <div className="flex shrink max-w-52 mx-4">
+            <SearchBar />
           </div>
         </div>
-
-        {/* Desno */}
-        <div className="flex items-stretch gap-0">
-          <input
-            type="text"
-            placeholder="Search"
-            className="
-      w-32 md:w-52
-      transition-all duration-300
-      hover:w-44 md:hover:w-72
-      focus:w-44 md:focus:w-72
-      px-3 py-2
-      text-text font-bold
-      border-2 border-secondary border-r-0
-      rounded-l-full
-      bg-input
-      focus:outline-none 
-      placeholder-secondary
-      box-border
-    "
-          />
-          <select
-            value={searchType}
-            onChange={(e) => setSearchType(e.target.value)}
-            className="
-      px-3 py-2
-      text-text font-bold
-      bg-input
-      border-2 border-secondary border-l-0
-      rounded-r-full
-      focus:outline-none 
-      cursor-pointer
-      box-border
-    "
-          >
-            <option value="Games">Games</option>
-            <option value="Authors">Authors</option>
-            <option value="Publishers">Publishers</option>
-          </select>
-        </div>
       </div>
-    </header>
-  );
-};
 
-export default Navbar;
+      {/* Mobile navigation */}
+      <DisclosurePanel className="sm:hidden">
+        <div className="space-y-1 px-2 pt-2 pb-3">
+          {navigation.map((item) => {
+            const isActive = location.pathname === item.href;
+
+            return (
+              <DisclosureButton
+                key={item.name}
+                as="a"
+                href={item.href}
+                className={classNames(
+                  isActive
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-300 hover:bg-white/5 hover:text-white",
+                  "block rounded-md px-3 py-2 text-base font-medium"
+                )}
+              >
+                {item.name}
+              </DisclosureButton>
+            );
+          })}
+        </div>
+      </DisclosurePanel>
+    </Disclosure>
+  );
+}

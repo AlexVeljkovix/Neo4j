@@ -6,6 +6,7 @@ namespace backend.Repos
     public interface IRentalRepo
     {
         Task<IEnumerable<RentalWithGameDTO>> GetAllRentals();
+        Task<IEnumerable<RentalWithGameDTO>> GetAllActiveRentals();
         Task<RentalWithGameDTO> GetRentalById(string id);
         Task<IEnumerable<RentalWithGameDTO>> GetActiveRentals(string JMBG);
         Task<IEnumerable<RentalWithGameDTO>> GetRentalsByGameId(string gameId);

@@ -1,11 +1,11 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
-import NavbarTW from "./components/NavbarTW.jsx";
-import FooterTW from "./components/FooterTW.jsx";
-import HomePage from "./pages/HomePage.jsx";
+import GamesPage from "./pages/GamesPage.jsx";
+import AuthorsPage from "./pages/AuthorsPage.jsx";
+import PublishersPage from "./pages/PublishersPage.jsx";
+import RentalsPage from "./pages/RentalsPage.jsx";
 
 const App = () => {
   return (
@@ -13,15 +13,19 @@ const App = () => {
       {/* Glavni layout mora biti flex kolona i full height */}
       <div className="min-h-screen flex flex-col">
         {/*<Navbar />*/}
-        <NavbarTW />
+        <Navbar />
 
         {/* Sadržaj treba da se rastegne da gura footer na dno */}
         <div className="grow">
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<Navigate to="/games" replace />} />
+            <Route path="/games" element={<GamesPage />} />
+            <Route path="/authors" element={<AuthorsPage />} />
+            <Route path="/publishers" element={<PublishersPage />} />
+            <Route path="/rentals" element={<RentalsPage />} />
           </Routes>
         </div>
-        <FooterTW />
+        <Footer />
         {/*<Footer />*/}
       </div>
     </BrowserRouter>

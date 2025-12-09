@@ -23,6 +23,12 @@ namespace backend.Controllers
             var rentals = await _rentalService.GetAllRentals();
             return Ok(rentals);
         }
+        [HttpGet("active")]
+        public async Task<ActionResult<IEnumerable<RentalWithGameDTO>>> GetAllActive()
+        {
+            var rentals = await _rentalService.GetAllActiveRentals();
+            return Ok(rentals);
+        }
 
         [HttpGet("by-id/{id}")]
         public async Task<ActionResult<RentalWithGameDTO>> GetById(string id)

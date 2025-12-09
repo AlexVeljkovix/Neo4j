@@ -17,6 +17,10 @@ namespace backend.Services
         {
             return await _rentalRepo.GetAllRentals();
         }
+        public async Task<IEnumerable<RentalWithGameDTO>> GetAllActiveRentals()
+        {
+            return await _rentalRepo.GetAllActiveRentals();
+        }
         public async Task<RentalWithGameDTO> GetRentalById(string id)
         {
             return await _rentalRepo.GetRentalById(id);

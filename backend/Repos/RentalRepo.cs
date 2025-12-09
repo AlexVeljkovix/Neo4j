@@ -38,6 +38,33 @@ namespace backend.Repos
             });
             return rentals;
         }
+        public async Task<IEnumerable<RentalWithGameDTO>>GetAllActiveRentals()
+        {
+            List<RentalWithGameDTO> rentals = new List<RentalWithGameDTO>();
+            await using var session = _driver.AsyncSession();
+            var cursor = await session.RunAsync(@"MATCH 
+                (r:Rental {Active: true})-[:RENTED_GAME]->(g:Game) 
+                RETURN r, g.Id AS GameId, g.Title AS GameName");
+
+            await cursor.ForEachAsync(record =>
+            {
+                var rNode = record["r"].As<INode>();
+                rentals.Add(new RentalWithGameDTO
+                {
+
+                    Id = rNode.Properties["Id"].As<string>(),
+                    Active = rNode.Properties["Active"].As<bool>(),
+                    RentalDate = rNode.Properties["RentalDate"].As<ZonedDateTime>().ToDateTimeOffset().DateTime,
+                    ReturnDate = rNode.Properties.ContainsKey("ReturnDate") ? (DateTime?)rNode.Properties["ReturnDate"].As<ZonedDateTime>().ToDateTimeOffset().DateTime : null,
+                    PersonName = rNode.Properties["PersonName"].As<string>(),
+                    PersonPhoneNumber = rNode.Properties["PersonPhoneNumber"].As<string>(),
+                    PersonJMBG = rNode.Properties["PersonJMBG"].As<string>(),
+                    GameId = record["GameId"].As<string>(),
+                    GameName = record["GameName"].As<string>()
+                });
+            });
+            return rentals;
+        }
         public async Task<RentalWithGameDTO> GetRentalById(string id)
         {
             RentalWithGameDTO rental = null;
@@ -144,7 +171,7 @@ namespace backend.Repos
                                                            {
                                                                 gameId,
                                                                 id = rental.Id,
-                                                                rentalDate = rental.RentalDate.ToString("o"),
+                                                                rentalDate = DateTime.Now.ToString("o"),
                                                                 personName = rental.PersonName,
                                                                 personPhoneNumber = rental.PersonPhoneNumber,
                                                                 personJMBG = rental.PersonJMBG

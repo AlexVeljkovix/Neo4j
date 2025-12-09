@@ -1,9 +1,8 @@
 import React from "react";
 
-const CardTW = ({ game }) => {
+const GameCard = ({ game }) => {
   return (
     <div className="bg-neutral-900/10 p-6 border border-gray-700 rounded-lg shadow-md h-60 flex flex-col">
-      {/* Slika igre, ako postoji */}
       {game.ImageUrl && (
         <img
           src={game.ImageUrl}
@@ -11,18 +10,9 @@ const CardTW = ({ game }) => {
           className="w-full h-40 object-cover rounded-md mb-4"
         />
       )}
-
-      {/* Naslov igre */}
       <h4 className="mb-2 text-xl font-semibold tracking-tight text-white">
         {game.title}
       </h4>
-
-      {/* Opis igre 
-      <p className="text-gray-300 mb-2">
-        {game.description || "Nema opisa za ovu igru."}
-      </p>*/}
-
-      {/* Autor i Publisher */}
       {game.author && (
         <p className="text-gray-400 text-sm mb-1">
           Autor: {game.author.firstName} {game.author.lastName} (
@@ -35,10 +25,9 @@ const CardTW = ({ game }) => {
         </p>
       )}
 
-      {/* Dugme za detalje */}
       <div className="mt-auto">
         <a
-          href={`/games/${game.Id}`} // ili gde vodi detaljni prikaz
+          href={`/games/${game.Id}`}
           className="inline-flex items-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 shadow font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none"
         >
           Pogledaj detalje
@@ -63,4 +52,4 @@ const CardTW = ({ game }) => {
   );
 };
 
-export default CardTW;
+export default GameCard;
