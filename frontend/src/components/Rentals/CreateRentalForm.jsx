@@ -11,7 +11,7 @@ const CreateRentalForm = ({ setShowForm }) => {
 
   useEffect(() => {
     getGames().then((data) => {
-      setGamesData(data);
+      setGamesData(data.sort((a, b) => a.title.localeCompare(b.title, "sr")));
     });
   }, []);
 

@@ -23,9 +23,20 @@ const CreateGameForm = ({ setShowForm }) => {
         getAuthors(),
         getPublishers(),
       ]);
-      setMechanicsData(mechanicsData);
-      setAuthorsData(authorsData);
-      setPublishersData(publishersData);
+      setMechanicsData(
+        mechanicsData.sort((a, b) => a.name.localeCompare(b.name, "sr"))
+      );
+      setAuthorsData(
+        authorsData.sort((a, b) =>
+          `${a.firstName} ${a.lastName}`.localeCompare(
+            `${b.firstName} ${b.lastName}`,
+            "sr"
+          )
+        )
+      );
+      setPublishersData(
+        publishersData.sort((a, b) => a.name.localeCompare(b.name, "sr"))
+      );
     } catch (err) {
       console.error("Error fetching data:", err);
     }
