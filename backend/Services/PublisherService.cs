@@ -38,6 +38,7 @@ namespace backend.Services
             return await _publisherRepo.CreatePublisher(new Publisher
             {
                 Name = publisher.Name,
+                Country= publisher.Country,
             });
         }
 
@@ -47,6 +48,7 @@ namespace backend.Services
             {
                 Id= id,
                 Name= publisherer.Name,
+                Country= publisherer.Country,
             });
         }
 

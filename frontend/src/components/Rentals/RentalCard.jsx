@@ -2,7 +2,8 @@ import React from "react";
 import { finishRental } from "../../api/rentalApi";
 const RentalCard = ({ rental }) => {
   const handleClick = () => {
-    finishRental(rental.Id);
+    console.log(rental.id);
+    finishRental(rental.id);
   };
 
   return (

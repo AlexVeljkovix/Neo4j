@@ -7,6 +7,8 @@
         public List<string> MechanicIds { get; set; }
         public string AuthorId { get; set; }
         public string PublisherId { get; set; }
+        public float Difficulty { get; set; }
+        public float AvailableUnits { get; set; }
 
     }
 }

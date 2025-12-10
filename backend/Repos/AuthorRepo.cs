@@ -82,6 +82,8 @@ namespace backend.Repos
                         Title = gNode.Properties["Title"].As<string>(),
                         Description = gNode.Properties["Description"].As<string>(),
                         Mechanics = new List<Mechanic>(),
+                        Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                        AvailableUnits = gNode.Properties["AvailableNodes"].As<float>()
                     };
 
                     gamesDict.Add(gameId, game);
@@ -93,7 +95,8 @@ namespace backend.Repos
                     game.Publisher = new Publisher
                     {
                         Id = pNode.Properties["Id"].As<string>(),
-                        Name = pNode.Properties["Name"].As<string>()
+                        Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>()
                     };
                 }
 
@@ -165,7 +168,9 @@ namespace backend.Repos
                         Id = gameId,
                         Title = gNode.Properties["Title"].As<string>(),
                         Description = gNode.Properties["Description"].As<string>(),
-                        Mechanics = new List<Mechanic>()
+                        Mechanics = new List<Mechanic>(),
+                        Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                        AvailableUnits = gNode.Properties["AvailableNodes"].As<float>()
                     };
 
                     author.Games.Add(game);
@@ -177,7 +182,8 @@ namespace backend.Repos
                     game.Publisher = new Publisher
                     {
                         Id = pNode.Properties["Id"].As<string>(),
-                        Name = pNode.Properties["Name"].As<string>()
+                        Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>()
                     };
                 }
 
@@ -285,7 +291,9 @@ namespace backend.Repos
                         Id = gameId,
                         Title = gNode.Properties["Title"].As<string>(),
                         Description = gNode.Properties["Description"].As<string>(),
-                        Mechanics = new List<Mechanic>()
+                        Mechanics = new List<Mechanic>(),
+                        Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                        AvailableUnits = gNode.Properties["AvailableNodes"].As<float>()
                     };
 
                     gamesDict.Add(gameId, game);
@@ -297,7 +305,8 @@ namespace backend.Repos
                     game.Publisher = new Publisher
                     {
                         Id = pNode.Properties["Id"].As<string>(),
-                        Name = pNode.Properties["Name"].As<string>()
+                        Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>()
                     };
                 }
 

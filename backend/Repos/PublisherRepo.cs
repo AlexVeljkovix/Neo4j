@@ -1,6 +1,7 @@
 ﻿using backend.Models;
 using backend.Services;
 using Neo4j.Driver;
+using System.Xml.Linq;
 
 namespace backend.Repos
 {
@@ -26,7 +27,8 @@ namespace backend.Repos
                 publishers.Add(new Publisher
                 {
                     Id = node.Properties["Id"].As<string>(),
-                    Name = node.Properties["Name"].As<string>()
+                    Name = node.Properties["Name"].As<string>(),
+                    Country = node.Properties["Country"].As<string>()
                 }) ;
             });
             return publishers;
@@ -58,6 +60,7 @@ namespace backend.Repos
                     {
                         Id = pNode.Properties["Id"].As<string>(),
                         Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>(),
                         Games = new List<Game>()
                     };
                 }
@@ -75,7 +78,10 @@ namespace backend.Repos
                         Id = gameId,
                         Title = gNode.Properties["Title"].As<string>(),
                         Description = gNode.Properties["Description"].As<string>(),
-                        Mechanics = new List<Mechanic>()
+                        Mechanics = new List<Mechanic>(),
+                        Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                        AvailableUnits = gNode.Properties["AvailableUnits"].As<float>()
+
                     };
 
                     gamesDict.Add(gameId, game);
@@ -136,6 +142,7 @@ namespace backend.Repos
                     {
                         Id=publisherId,
                         Name = pNode.Properties["Name"].As<string>(),
+                        Country= pNode.Properties["Country"].As<string>(),
                         Games = new List<Game>()
                     };
 
@@ -157,6 +164,8 @@ namespace backend.Repos
                         Id = gameId,
                         Title = gNode.Properties["Title"].As<string>(),
                         Description = gNode.Properties["Description"].As<string>(),
+                        Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                        AvailableUnits= gNode.Properties["AvailableUnits"].As<float>(),
                         Mechanics = new List<Mechanic>()
                     };
 
@@ -192,11 +201,12 @@ namespace backend.Repos
         public async Task<Publisher> CreatePublisher(Publisher publisher)
         {
             await using var session = _driver.AsyncSession();
-            await session.RunAsync("CREATE (p:Publisher {Id:$Id, Name:$Name})",
+            await session.RunAsync("CREATE (p:Publisher {Id:$Id, Name:$Name, Country:$Country})",
                 new
                 {
                     publisher.Id,
-                    publisher.Name
+                    publisher.Name,
+                    publisher.Country
                 });
             return publisher;
         }
@@ -205,11 +215,13 @@ namespace backend.Repos
         {
             await using var session = _driver.AsyncSession();
             await session.RunAsync(@"MATCH (p:Publisher {Id:$Id}) SET
-                                            p.Name=$Name",
+                                            p.Name=$Name,
+                                            p.Country=$Country",
                                             new
                                             {
                                                 publisher.Id,
-                                                publisher.Name
+                                                publisher.Name,
+                                                publisher.Country
                                             });
             return publisher;
         }
@@ -248,6 +260,7 @@ namespace backend.Repos
                     {
                         Id = pNode.Properties["Id"].As<string>(),
                         Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>(),
                         Games = new List<Game>()
                     };
                 }
@@ -265,6 +278,8 @@ namespace backend.Repos
                         Id = gameId,
                         Title = gNode.Properties["Title"].As<string>(),
                         Description = gNode.Properties["Description"].As<string>(),
+                        Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                        AvailableUnits = gNode.Properties["AvailableUnits"].As<float>(),
                         Mechanics = new List<Mechanic>()
                     };
 

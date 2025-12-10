@@ -91,7 +91,7 @@ const RentalsPage = () => {
                 />
               </svg>
 
-              <h2 className="text-xl font-semibold mb-2">Nema igara</h2>
+              <h2 className="text-xl font-semibold mb-2">Nema unosa</h2>
               <p className="text-center max-w-sm">
                 Trenutno ne postoje iznajmljivanja u bazi. Dodaj nove unose kako
                 bi se prikazali ovde.

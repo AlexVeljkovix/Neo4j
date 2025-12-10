@@ -158,6 +158,7 @@ namespace backend.Repos
         {
             await using var session=_driver.AsyncSession();
             var cursor=await session.RunAsync(@" MATCH (g:Game {Id:$gameId})
+                                                            WHERE g.AvailableUnits>0
                                                             CREATE (r:Rental {Id: $id,
                                                             Active: true,   
                                                             RentalDate: datetime($rentalDate), 
@@ -165,7 +166,8 @@ namespace backend.Repos
                                                             PersonPhoneNumber: $personPhoneNumber, 
                                                             PersonJMBG: $personJMBG,
                                                             GameId: $gameId})
-                                                            CREATE (r)-[:RENTED_GAME]->(g)",
+                                                            CREATE (r)-[:RENTED_GAME]->(g)
+                                                            SET g.AvailableUnits = g.AvailableUnits-1",
                                                            
                                                            new
                                                            {
@@ -186,7 +188,10 @@ namespace backend.Repos
             if (rental == null)
                 return null;
             await using var session = _driver.AsyncSession();
-            await session.RunAsync("MATCH (r:Rental {Id: $id}) SET r.Active=false, r.ReturnDate=datetime($date)", new {id, date=DateTime.Now});
+            await session.RunAsync(@"MATCH (r:Rental {Id: $id}) SET r.Active=false,
+                                                                    r.ReturnDate=datetime($date)
+                                WITH r
+                                MATCH (g)<-[:RENTED_GAME]-(r) SET g.AvailableUnits=g.AvailableUnits+1", new {id, date=DateTime.Now});
             return rental;
         }
         public async Task<RentalWithGameDTO> DeleteRentalRecord(string id)

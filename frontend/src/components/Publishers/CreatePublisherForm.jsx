@@ -3,11 +3,12 @@ import { createPublisher } from "../../api/publisherApi";
 
 const CreatePublisherForm = ({ setShowForm }) => {
   const [name, setName] = useState("");
-
+  const [country, setCountry] = useState("");
   const submitForm = (e) => {
     e.preventDefault();
     createPublisher({
       name: name,
+      country: country,
     }).then((res) => {
       console.log(res);
       setShowForm(false);
@@ -24,6 +25,12 @@ const CreatePublisherForm = ({ setShowForm }) => {
             type="text"
             onChange={(e) => setName(e.target.value)}
             placeholder="Ime izdavaca"
+            className="border p-2 rounded"
+          />
+          <input
+            type="text"
+            onChange={(e) => setCountry(e.target.value)}
+            placeholder="Država"
             className="border p-2 rounded"
           />
 

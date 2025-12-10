@@ -28,8 +28,6 @@ builder.Services.AddSingleton<Neo4jDriverService>(sp =>
 );
 
 // ==== Repozitorijumi i servisi ====
-builder.Services.AddScoped<IUserRepo, UserRepo>();
-builder.Services.AddScoped<UserService>();
 
 builder.Services.AddScoped<IAuthorRepo, AuthorRepo>();
 builder.Services.AddScoped<AuthorService>();

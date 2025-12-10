@@ -91,7 +91,7 @@ const PublishersPage = () => {
                 />
               </svg>
 
-              <h2 className="text-xl font-semibold mb-2">Nema autora</h2>
+              <h2 className="text-xl font-semibold mb-2">Nema izdavača</h2>
               <p className="text-center max-w-sm">
                 Trenutno ne postoje izdavaci u bazi. Dodaj nove izdavace kako bi
                 se prikazali ovde.

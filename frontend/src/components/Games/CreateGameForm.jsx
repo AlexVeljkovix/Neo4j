@@ -9,6 +9,8 @@ const CreateGameForm = ({ setShowForm }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [mechanicsSelected, setMechanicsSelected] = useState([]);
+  const [difficulty, setDifficulty] = useState(0);
+  const [availableUnits, setAvailableUnits] = useState(0);
   const [author, setAuthor] = useState("");
   const [publisher, setPublisher] = useState("");
 
@@ -48,6 +50,8 @@ const CreateGameForm = ({ setShowForm }) => {
       title: title,
       description: description,
       mechanicIds: mechanicsSelected.map((m) => m.id),
+      difficulty: difficulty,
+      availableUnits: availableUnits,
       authorId: author,
       publisherId: publisher,
     }).then((res) => {
@@ -79,6 +83,23 @@ const CreateGameForm = ({ setShowForm }) => {
             placeholder="Opis igre"
             className="border p-2 rounded"
           />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Težina"
+              onChange={(e) => setDifficulty(Number(e.target.value))}
+              className="border p-2 rounded"
+            />
+
+            <input
+              type="number"
+              min={0}
+              placeholder="Dostupnih komada"
+              onChange={(e) => setAvailableUnits(Number(e.target.value))}
+              className="border p-2 rounded"
+            />
+          </div>
+
           <MultipleSelect
             mechanics={mechanicsData}
             selected={mechanicsSelected}

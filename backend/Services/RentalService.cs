@@ -35,13 +35,17 @@ namespace backend.Services
         }
         public async Task<Rental> CreateRentalRecord(RentalDTO rental)
         {
-            return await _rentalRepo.CreateRentalRecord(new Rental
-            {
-                RentalDate = rental.RentalDate,
-                PersonName = rental.PersonName,
-                PersonPhoneNumber = rental.PersonPhoneNumber,
-                PersonJMBG = rental.PersonJMBG,
-            }, rental.GameId);
+            
+                return await _rentalRepo.CreateRentalRecord(new Rental
+                {
+                    RentalDate = rental.RentalDate,
+                    PersonName = rental.PersonName,
+                    PersonPhoneNumber = rental.PersonPhoneNumber,
+                    PersonJMBG = rental.PersonJMBG,
+                }, rental.GameId);
+            
+            throw new Exception("No available units for that game");
+            
         }
 
 

@@ -15,7 +15,7 @@ const PublisherCard = ({ publisher }) => {
       <h4 className="mb-2 text-xl font-semibold tracking-tight text-white">
         {publisher.name}
       </h4>
-
+      <p className="text-gray-400 text-sm mb-1">Država: {publisher.country}</p>
       <div className="mt-auto flex justify-between">
         <a
           href={`/publishers/${publisher.Id}`}

@@ -49,7 +49,9 @@ namespace backend.Services
             return await _gameRepo.CreateGame(new Game
             {
                 Title=game.Title,
-                Description=game.Description
+                Description=game.Description,
+                Difficulty=game.Difficulty,
+                AvailableUnits=game.AvailableUnits,
             }, game.MechanicIds, game.AuthorId,game.PublisherId);
         }
 
@@ -59,7 +61,9 @@ namespace backend.Services
             {
                 Id=id,
                 Title=game.Title,
-                Description= game.Description
+                Description= game.Description,
+                Difficulty = game.Difficulty,
+                AvailableUnits = game.AvailableUnits
             });
         }
 

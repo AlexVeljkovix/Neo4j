@@ -26,6 +26,9 @@ const GameCard = ({ game }) => {
           Izdavač: {game.publisher.name}
         </p>
       )}
+      <p className="text-gray-400 text-sm mb-3">
+        Dostupno: {game.availableUnits}
+      </p>
 
       <div className="mt-auto flex justify-between">
         <a

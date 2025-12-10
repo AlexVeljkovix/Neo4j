@@ -36,6 +36,8 @@ namespace backend.Repos
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                    AvailableUnits = gNode.Properties["AvailableUnits"].As<float>(),
                     Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
@@ -47,7 +49,8 @@ namespace backend.Repos
                     Publisher = new Publisher
                     {
                         Id = pNode.Properties["Id"].As<string>(),
-                        Name = pNode.Properties["Name"].As<string>()
+                        Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>()
                     }
                 };
                 foreach (var mNode in record["mechanics"].As<List<INode>>())
@@ -88,6 +91,8 @@ namespace backend.Repos
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                    AvailableUnits = gNode.Properties["AvailableUnits"].As<float>(),
                     Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
@@ -99,7 +104,8 @@ namespace backend.Repos
                     Publisher = new Publisher
                     {
                         Id = pNode.Properties["Id"].As<string>(),
-                        Name = pNode.Properties["Name"].As<string>()
+                        Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>()
                     }
                 };
                 foreach (var mNode in record["mechanics"].As<List<INode>>())
@@ -139,6 +145,8 @@ namespace backend.Repos
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                    AvailableUnits = gNode.Properties["AvailableUnits"].As<float>(),
                     Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
@@ -150,7 +158,8 @@ namespace backend.Repos
                     Publisher = new Publisher
                     {
                         Id = pNode.Properties["Id"].As<string>(),
-                        Name = pNode.Properties["Name"].As<string>()
+                        Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>()
                     }
                 };
                 foreach (var mNode in record["mechanics"].As<List<INode>>())
@@ -172,9 +181,13 @@ namespace backend.Repos
             await using var session = _driver.AsyncSession();
 
             await session.RunAsync(@"
-            CREATE (g:Game {Id:$Id})
-            SET g.Title = $Title,
-                g.Description = $Description
+           CREATE (g:Game {
+                Id:$Id,
+                Title:$Title,
+                Description:$Description,
+                Difficulty:$Difficulty,
+                AvailableUnits:$AvailableUnits
+            })
             WITH g
             MATCH (a:Author {Id:$authorId})
             MERGE (a)-[:CREATED]->(g)
@@ -187,6 +200,8 @@ namespace backend.Repos
                     game.Id,
                     game.Title,
                     game.Description,
+                    game.Difficulty,
+                    game.AvailableUnits,
                     authorId,
                     publisherId
                 });
@@ -212,7 +227,9 @@ namespace backend.Repos
             await session.RunAsync(@"
                 MATCH (g:Game {Id:$Id})
                 SET g.Title = $Title,
-                    g.Description = $Description
+                    g.Description = $Description,
+                    g.Difficulty=$Difficulty,
+                    g.AvailableUnits=$AvailableUnits
 
                 WITH g
                 MATCH (g)<-[r1:CREATED]-()
@@ -285,6 +302,8 @@ namespace backend.Repos
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                    AvailableUnits = gNode.Properties["AvailableUnits"].As<float>(),
                     Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
@@ -296,7 +315,8 @@ namespace backend.Repos
                     Publisher = new Publisher
                     {
                         Id = pNode.Properties["Id"].As<string>(),
-                        Name = pNode.Properties["Name"].As<string>()
+                        Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>()
                     }
                 };
                 foreach (var mNode in record["mechanics"].As<List<INode>>())
@@ -335,6 +355,8 @@ namespace backend.Repos
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                    AvailableUnits = gNode.Properties["AvailableUnits"].As<float>(),
                     Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
@@ -346,7 +368,8 @@ namespace backend.Repos
                     Publisher = new Publisher
                     {
                         Id = pNode.Properties["Id"].As<string>(),
-                        Name = pNode.Properties["Name"].As<string>()
+                        Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>()
                     }
                 };
                 foreach (var mNode in record["mechanics"].As<List<INode>>())
@@ -387,6 +410,8 @@ namespace backend.Repos
                     Id = gNode.Properties["Id"].As<string>(),
                     Title = gNode.Properties["Title"].As<string>(),
                     Description = gNode.Properties["Description"].As<string>(),
+                    Difficulty = gNode.Properties["Difficulty"].As<float>(),
+                    AvailableUnits = gNode.Properties["AvailableUnits"].As<float>(),
                     Mechanics = new List<Mechanic>(),
                     Author = new Author
                     {
@@ -398,7 +423,8 @@ namespace backend.Repos
                     Publisher = new Publisher
                     {
                         Id = pNode.Properties["Id"].As<string>(),
-                        Name = pNode.Properties["Name"].As<string>()
+                        Name = pNode.Properties["Name"].As<string>(),
+                        Country = pNode.Properties["Country"].As<string>()
                     }
                 };
                 foreach(var mechanic in record["mechanics"].As<List<INode>>())
