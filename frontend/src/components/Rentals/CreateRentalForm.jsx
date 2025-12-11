@@ -1,6 +1,6 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { createRental } from "../../api/rentalApi";
-import { getGames } from "../../api/gameApi";
+import { getAvailableGames } from "../../api/gameApi";
 
 const CreateRentalForm = ({ setShowForm }) => {
   const [gamesData, setGamesData] = useState([]);
@@ -10,7 +10,7 @@ const CreateRentalForm = ({ setShowForm }) => {
   const [gameId, setGameId] = useState("");
 
   useEffect(() => {
-    getGames().then((data) => {
+    getAvailableGames().then((data) => {
       setGamesData(data.sort((a, b) => a.title.localeCompare(b.title, "sr")));
     });
   }, []);
@@ -29,8 +29,8 @@ const CreateRentalForm = ({ setShowForm }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white text-black p-6 rounded-lg shadow-xl w-full max-w-md">
         <h2 className="text-xl font-semibold mb-4">Novo iznajmljivanje</h2>
 
         <form className="flex flex-col gap-3">
@@ -47,12 +47,14 @@ const CreateRentalForm = ({ setShowForm }) => {
             placeholder="JMBG"
             className="border p-2 rounded"
           />
+
           <input
             type="text"
             onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="Broj telefona"
             className="border p-2 rounded"
           />
+
           <select
             className="border p-2 rounded"
             value={gameId}
@@ -65,6 +67,7 @@ const CreateRentalForm = ({ setShowForm }) => {
               </option>
             ))}
           </select>
+
           <div className="flex justify-end gap-3 mt-3">
             <button
               type="button"

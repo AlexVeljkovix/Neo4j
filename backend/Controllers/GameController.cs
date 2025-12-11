@@ -24,6 +24,12 @@ namespace backend.Controllers
             return Ok(games);
         }
 
+        [HttpGet("available")]
+        public async Task<ActionResult<IEnumerable<Game>>> GetAllAvailable()
+        {
+            var games=await _gameService.GetAllAvailableGames();
+            return Ok(games);
+        }
 
         [HttpGet("by-id/{id}")]
         public async Task<ActionResult<Game>> GetById(string id)
@@ -37,9 +43,9 @@ namespace backend.Controllers
         }
 
         [HttpGet("by-authorId/{authorId}")]
-        public async Task<ActionResult<Game>> GetByAuthorId(string authorId)
+        public async Task<ActionResult<IEnumerable<Game>>> GetByAuthorId(string authorId)
         {
-            var game = await _gameService.GetGameByAuthorId(authorId);
+            var game = await _gameService.GetGamesByAuthorId(authorId);
 
             if (game == null)
                 return NotFound($"Game with author ID {authorId} not found.");
@@ -49,9 +55,9 @@ namespace backend.Controllers
 
 
         [HttpGet("by-publisherId/{publisherId}")]
-        public async Task<ActionResult<Game>> GetByPublisherId(string publisherId)
+        public async Task<ActionResult<IEnumerable<Game>>> GetByPublisherId(string publisherId)
         {
-            var game = await _gameService.GetGameById(publisherId);
+            var game = await _gameService.GetGamesByPublisherId(publisherId);
 
             if (game == null)
                 return NotFound($"Game with publisher ID {publisherId} not found.");
@@ -60,9 +66,9 @@ namespace backend.Controllers
         }
 
         [HttpGet("by-mechanicId/{mechanicsId}")]
-        public async Task<ActionResult<Game>> GetByMechanicsId(string mechanicsId)
+        public async Task<ActionResult<IEnumerable<Game>>> GetByMechanicsId(string mechanicsId)
         {
-            var game = await _gameService.GetGameById(mechanicsId);
+            var game = await _gameService.GetGamesByMechanicsId(mechanicsId);
 
             if (game == null)
                 return NotFound($"Game with mechanics ID {mechanicsId} not found.");

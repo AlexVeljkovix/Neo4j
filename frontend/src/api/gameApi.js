@@ -3,8 +3,12 @@ import { Get, Post, Put, Delete } from "./httpClient";
 export function getGames() {
   return Get("/game");
 }
+
+export function getAvailableGames() {
+  return Get("/game/available");
+}
 export function getGameById(id) {
-  return Get(`game/by-id/${id}`);
+  return Get(`/game/by-id/${id}`);
 }
 export function getGamesByPublisherId(publisherId) {
   return Get(`/game/by-publisherId/${publisherId}`);

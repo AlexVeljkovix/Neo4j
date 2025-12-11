@@ -16,6 +16,10 @@ namespace backend.Services
         {
             return await _gameRepo.GetAllGames();
         }
+        public async Task<IEnumerable<Game>> GetAllAvailableGames()
+        {
+            return await _gameRepo.GetAllAvailableGames();
+        }
 
         public async Task<Game> GetGameById(string authorId)
         {
@@ -28,17 +32,17 @@ namespace backend.Services
         }
 
 
-        public async Task<IEnumerable<Game>> GetGameByAuthorId(string authorId)
+        public async Task<IEnumerable<Game>> GetGamesByAuthorId(string authorId)
         {
             return await _gameRepo.GetGamesByAuthorId(authorId);
         }
 
-        public async Task<IEnumerable<Game>> GetGameByPublisherId(string publisherId)
+        public async Task<IEnumerable<Game>> GetGamesByPublisherId(string publisherId)
         {
             return await _gameRepo.GetGamesByPublisherId(publisherId);
         }
 
-        public async Task<IEnumerable<Game>> GetGameByMechanicsId(string mechanicsId)
+        public async Task<IEnumerable<Game>> GetGamesByMechanicsId(string mechanicsId)
         {
             return await _gameRepo.GetGamesByMechanicsId(mechanicsId);
         }

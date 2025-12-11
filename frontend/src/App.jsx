@@ -6,6 +6,7 @@ import GamesPage from "./pages/GamesPage.jsx";
 import AuthorsPage from "./pages/AuthorsPage.jsx";
 import PublishersPage from "./pages/PublishersPage.jsx";
 import RentalsPage from "./pages/RentalsPage.jsx";
+import GameDetailsPage from "./pages/GameDetailsPage.jsx";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Navigate to="/games" replace />} />
             <Route path="/games" element={<GamesPage />} />
+            <Route path="/games/:id" element={<GameDetailsPage />} />
             <Route path="/authors" element={<AuthorsPage />} />
             <Route path="/publishers" element={<PublishersPage />} />
             <Route path="/rentals" element={<RentalsPage />} />

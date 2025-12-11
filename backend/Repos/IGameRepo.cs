@@ -4,6 +4,7 @@ namespace backend.Repos
     public interface IGameRepo
     {
         Task<IEnumerable<Game>> GetAllGames();
+        Task<IEnumerable<Game>> GetAllAvailableGames();
         Task<Game> GetGameById(string id);
         Task<IEnumerable<Game>> GetGameByTitle(string title);
         Task<Game> CreateGame(Game game, List<string> mechanicIds, string authorId, string publisherId);
