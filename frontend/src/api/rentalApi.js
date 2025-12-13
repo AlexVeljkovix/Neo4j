@@ -7,7 +7,9 @@ export function getRentals() {
 export function getActiveRentals() {
   return Get("/rental/active");
 }
-
+export function getRentalById(rentalId) {
+  return Get(`/rental/by-id/${rentalId}`);
+}
 export function createRental(data) {
   return Post("/rental", data);
 }

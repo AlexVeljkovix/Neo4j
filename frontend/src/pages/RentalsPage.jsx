@@ -1,44 +1,52 @@
 import RentalsList from "../components/Rentals/RentalsList";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { PlusIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
-import CreateRentalForm from "../components//Rentals/CreateRentalForm";
-import { getActiveRentals } from "../api/rentalApi";
+import { PlusIcon } from "@heroicons/react/20/solid";
+import { useState } from "react";
+import CreateRentalForm from "../components/Rentals/CreateRentalForm";
+import { useRental } from "../context/RentalContext";
 
 const RentalsPage = () => {
-  const [rentals, setRentals] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { rentals, loading, error } = useRental();
   const [showForm, setShowForm] = useState(false);
-  useEffect(() => {
-    getActiveRentals()
-      .then((data) => {
-        setRentals(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
+  const [showActiveOnly, setShowActiveOnly] = useState(true); // toggle state
+  const filteredRentals = showActiveOnly
+    ? rentals.filter((r) => r.active === true)
+    : rentals;
   return (
     <div className="mx-6 my-4 min-h-[80vh]">
-      {/* Naslov i dugme */}
+      {/* Naslov, toggle i dugme */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
         <h2 className="text-2xl font-bold sm:text-3xl sm:tracking-tight mb-4 sm:mb-0">
           Sva iznajmljivanja
         </h2>
-        <button
-          onClick={() => setShowForm(true)}
-          type="button"
-          className="inline-flex items-center rounded-md bg-gray-800 hover:cursor-pointer px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
-        >
-          <PlusIcon aria-hidden="true" className="mr-1.5 h-5 w-5" />
-          Novo iznajmljivanje
-        </button>
+
+        <div className="flex items-center gap-2 sm:gap-4">
+          {/* Toggle za aktivna/sva iznajmljivanja */}
+          <div className="flex items-center gap-2">
+            <span className="text-black font-bold">Sva</span>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={showActiveOnly}
+                onChange={() => setShowActiveOnly((prev) => !prev)}
+              />
+              <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-offset-2 peer-focus:ring-indigo-500 rounded-full peer peer-checked:bg-green-600 transition-all"></div>
+              <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full peer-checked:translate-x-5 transition-transform"></div>
+            </label>
+            <span className="text-black font-bold">Aktivna</span>
+          </div>
+
+          {/* Dugme za novo iznajmljivanje */}
+          <button
+            onClick={() => setShowForm(true)}
+            type="button"
+            className="inline-flex items-center rounded-md bg-gray-800 hover:cursor-pointer px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+          >
+            <PlusIcon aria-hidden="true" className="mr-1.5 h-5 w-5" />
+            Novo iznajmljivanje
+          </button>
+        </div>
       </div>
 
       {/* LOADING - SKELETON */}
@@ -70,10 +78,11 @@ const RentalsPage = () => {
           </div>
         </div>
       )}
+
       {!loading && !error && (
         <>
-          {rentals.length > 0 ? (
-            <RentalsList rentals={rentals} />
+          {filteredRentals.length > 0 ? (
+            <RentalsList rentals={filteredRentals} />
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-gray-400">
               <svg

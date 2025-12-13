@@ -10,6 +10,9 @@ export function getAvailableGames() {
 export function getGameById(id) {
   return Get(`/game/by-id/${id}`);
 }
+export function getGamesByAuthorId(authorId) {
+  return Get(`/game/by-authorId/${authorId}`);
+}
 export function getGamesByPublisherId(publisherId) {
   return Get(`/game/by-publisherId/${publisherId}`);
 }

@@ -9,12 +9,12 @@ const GameDetailsPage = () => {
   const { id } = useParams();
   const [game, setGame] = useState(null);
   const [similarGames, setSimilarGames] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
+    setLoading(true);
     setError(null);
 
     setTimeout(() => {
@@ -46,11 +46,11 @@ const GameDetailsPage = () => {
           }
         })
         .catch((err) => setError(err.message))
-        .finally(() => setIsLoading(false));
+        .finally(() => setLoading(false));
     }, 1000);
   }, [id]);
 
-  if (isLoading)
+  if (loading)
     return (
       <div className="p-8 text-white">
         <div className="animate-pulse bg-gray-800/50 p-6 rounded-lg w-full h-40" />
@@ -60,7 +60,7 @@ const GameDetailsPage = () => {
   return (
     <div className="p-8 text-white flex flex-col md:flex-row gap-6">
       {/* ERROR ALERT */}
-      {!isLoading && error && (
+      {!loading && error && (
         <div className="flex items-start gap-3 bg-red-900/20 border border-red-700 text-red-300 px-4 py-3 rounded-lg mb-6 w-full">
           <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-red-400" />
           <div>
@@ -166,7 +166,9 @@ const GameDetailsPage = () => {
           </div>
 
           {/* MODAL – Forma za iznajmljivanje */}
-          {showForm && <CreateRentalForm setShowForm={setShowForm} />}
+          {showForm && (
+            <CreateRentalForm setShowForm={setShowForm} defaultGame={game} />
+          )}
         </>
       )}
     </div>

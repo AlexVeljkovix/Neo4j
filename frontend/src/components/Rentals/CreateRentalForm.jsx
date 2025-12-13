@@ -1,18 +1,23 @@
 import { useState, useEffect } from "react";
 import { createRental } from "../../api/rentalApi";
 import { getAvailableGames } from "../../api/gameApi";
+import { useRental } from "../../context/RentalContext";
 
-const CreateRentalForm = ({ setShowForm }) => {
+const CreateRentalForm = ({ setShowForm, defaultGame }) => {
   const [gamesData, setGamesData] = useState([]);
   const [name, setName] = useState("");
   const [JMBG, setJMBG] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [gameId, setGameId] = useState("");
-
+  const { addRental } = useRental();
   useEffect(() => {
-    getAvailableGames().then((data) => {
-      setGamesData(data.sort((a, b) => a.title.localeCompare(b.title, "sr")));
-    });
+    if (defaultGame != null) {
+      setGameId(defaultGame.id);
+    } else {
+      getAvailableGames().then((data) => {
+        setGamesData(data.sort((a, b) => a.title.localeCompare(b.title, "sr")));
+      });
+    }
   }, []);
 
   const submitForm = (e) => {
@@ -23,17 +28,17 @@ const CreateRentalForm = ({ setShowForm }) => {
       personJMBG: JMBG,
       gameId: gameId,
     }).then((res) => {
-      console.log(res);
+      addRental(data);
       setShowForm(false);
     });
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white text-black p-6 rounded-lg shadow-xl w-full max-w-md">
         <h2 className="text-xl font-semibold mb-4">Novo iznajmljivanje</h2>
 
-        <form className="flex flex-col gap-3">
+        <form onSubmit={submitForm} className="flex flex-col gap-3">
           <input
             type="text"
             onChange={(e) => setName(e.target.value)}
@@ -60,12 +65,20 @@ const CreateRentalForm = ({ setShowForm }) => {
             value={gameId}
             onChange={(e) => setGameId(e.target.value)}
           >
-            <option value="">Izaberite igru</option>
-            {gamesData.map((game) => (
-              <option key={game.id} value={game.id}>
-                {game.title}
+            {defaultGame == null ? (
+              <>
+                <option value="">Izaberite igru</option>
+                {gamesData.map((game) => (
+                  <option key={game.id} value={game.id}>
+                    {game.title}
+                  </option>
+                ))}
+              </>
+            ) : (
+              <option key={defaultGame.id} value={defaultGame.id}>
+                {defaultGame.title}
               </option>
-            ))}
+            )}
           </select>
 
           <div className="flex justify-end gap-3 mt-3">
@@ -79,7 +92,6 @@ const CreateRentalForm = ({ setShowForm }) => {
 
             <button
               type="submit"
-              onClick={submitForm}
               className="px-4 py-2 bg-gray-800 hover:bg-gray-700 hover:cursor-pointer text-white rounded"
             >
               Sačuvaj

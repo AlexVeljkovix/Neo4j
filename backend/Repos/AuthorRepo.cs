@@ -83,7 +83,7 @@ namespace backend.Repos
                         Description = gNode.Properties["Description"].As<string>(),
                         Mechanics = new List<Mechanic>(),
                         Difficulty = gNode.Properties["Difficulty"].As<float>(),
-                        AvailableUnits = gNode.Properties["AvailableNodes"].As<float>()
+                        AvailableUnits = gNode.Properties["AvailableUnits"].As<float>()
                     };
 
                     gamesDict.Add(gameId, game);
@@ -170,7 +170,7 @@ namespace backend.Repos
                         Description = gNode.Properties["Description"].As<string>(),
                         Mechanics = new List<Mechanic>(),
                         Difficulty = gNode.Properties["Difficulty"].As<float>(),
-                        AvailableUnits = gNode.Properties["AvailableNodes"].As<float>()
+                        AvailableUnits = gNode.Properties["AvailableUnits"].As<float>()
                     };
 
                     author.Games.Add(game);
@@ -293,7 +293,7 @@ namespace backend.Repos
                         Description = gNode.Properties["Description"].As<string>(),
                         Mechanics = new List<Mechanic>(),
                         Difficulty = gNode.Properties["Difficulty"].As<float>(),
-                        AvailableUnits = gNode.Properties["AvailableNodes"].As<float>()
+                        AvailableUnits = gNode.Properties["AvailableUnits"].As<float>()
                     };
 
                     gamesDict.Add(gameId, game);

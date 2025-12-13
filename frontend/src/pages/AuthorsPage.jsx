@@ -4,27 +4,18 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import CreateAuthorForm from "../components/Authors/CreateAuthorForm";
+import { useAuthor } from "../context/AuthorContext";
+import { useSearch } from "../context/SearchContext";
 
 const AuthorsPage = () => {
-  const [authors, setAuthors] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { authors, loading, error } = useAuthor();
   const [showForm, setShowForm] = useState(false);
-
-  useEffect(() => {
-    getAuthors()
-      .then((data) => {
-        setAuthors(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
+  const { searchTerm } = useSearch();
+  const filteredAuthors = authors.filter((a) =>
+    `${a.firstName} ${a.lastName}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
   return (
     <div className="mx-6 my-4 min-h-[80vh]">
       {/* Naslov i dugme */}
@@ -74,7 +65,7 @@ const AuthorsPage = () => {
       {!loading && !error && (
         <>
           {authors.length > 0 ? (
-            <AuthorsList authors={authors} />
+            <AuthorsList authors={filteredAuthors} />
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-gray-400">
               <svg

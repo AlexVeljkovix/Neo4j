@@ -7,29 +7,59 @@ import AuthorsPage from "./pages/AuthorsPage.jsx";
 import PublishersPage from "./pages/PublishersPage.jsx";
 import RentalsPage from "./pages/RentalsPage.jsx";
 import GameDetailsPage from "./pages/GameDetailsPage.jsx";
+import AuthorDetailsPage from "./pages/AuthorDetailsPage.jsx";
+import PublisherDetailsPage from "./pages/PublisherDetailsPage.jsx";
+import RentalDetailsPage from "./pages/RentalDetailsPage.jsx";
 
+import { PublisherProvider } from "./context/PublisherContext";
+import { AuthorProvider } from "./context/AuthorContext.jsx";
+import { GameProvider } from "./context/GameContext.jsx";
+import { RentalProvider } from "./context/RentalContext.jsx";
+import { SearchProvider } from "./context/SearchContext.jsx";
 const App = () => {
   return (
     <BrowserRouter>
-      {/* Glavni layout mora biti flex kolona i full height */}
-      <div className="min-h-screen flex flex-col">
-        {/*<Navbar />*/}
-        <Navbar />
+      <SearchProvider>
+        <RentalProvider>
+          <GameProvider>
+            <AuthorProvider>
+              <PublisherProvider>
+                <div className="min-h-screen flex flex-col">
+                  <Navbar />
 
-        {/* Sadržaj treba da se rastegne da gura footer na dno */}
-        <div className="grow">
-          <Routes>
-            <Route path="/" element={<Navigate to="/games" replace />} />
-            <Route path="/games" element={<GamesPage />} />
-            <Route path="/games/:id" element={<GameDetailsPage />} />
-            <Route path="/authors" element={<AuthorsPage />} />
-            <Route path="/publishers" element={<PublishersPage />} />
-            <Route path="/rentals" element={<RentalsPage />} />
-          </Routes>
-        </div>
-        <Footer />
-        {/*<Footer />*/}
-      </div>
+                  <div className="grow">
+                    <Routes>
+                      <Route
+                        path="/"
+                        element={<Navigate to="/games" replace />}
+                      />
+                      <Route path="/games" element={<GamesPage />} />
+                      <Route path="/games/:id" element={<GameDetailsPage />} />
+                      <Route path="/authors" element={<AuthorsPage />} />
+                      <Route
+                        path="/authors/:id"
+                        element={<AuthorDetailsPage />}
+                      />
+                      <Route path="/publishers" element={<PublishersPage />} />
+                      <Route
+                        path="/publishers/:id"
+                        element={<PublisherDetailsPage />}
+                      />
+                      <Route path="/rentals" element={<RentalsPage />} />
+                      <Route
+                        path="/rentals/:id"
+                        element={<RentalDetailsPage />}
+                      />
+                    </Routes>
+                  </div>
+
+                  <Footer />
+                </div>
+              </PublisherProvider>
+            </AuthorProvider>
+          </GameProvider>
+        </RentalProvider>
+      </SearchProvider>
     </BrowserRouter>
   );
 };

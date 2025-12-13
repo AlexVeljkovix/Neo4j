@@ -1,8 +1,11 @@
 import { deleteGame } from "../../api/gameApi";
+import { Link } from "react-router-dom";
+import { useGame } from "../../context/GameContext";
 const GameCard = ({ game }) => {
-  console.log(game);
+  const { removeGame } = useGame();
   const handleClick = () => {
     deleteGame(game.id);
+    removeGame(game.id);
   };
   const cardColors = [
     "bg-green-400",
@@ -46,12 +49,12 @@ const GameCard = ({ game }) => {
       </p>
 
       <div className="mt-auto flex justify-between">
-        <a
-          href={`/games/${game.id}`}
+        <Link
+          to={`/games/${game.id}`}
           className="inline-flex items-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 shadow font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none"
         >
           Pogledaj detalje
-        </a>
+        </Link>
         <button
           onClick={handleClick}
           className="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-500 shadow font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none hover: cursor-pointer"

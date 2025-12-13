@@ -4,9 +4,9 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import SearchBar from "./SearchBar";
-import { useLocation } from "react-router-dom";
 
 const navigation = [
   { name: "Igre", href: "/games" },
@@ -29,15 +29,14 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500">
-              <span className="absolute -inset-0.5" />
               <span className="sr-only">Open main menu</span>
               <Bars3Icon
                 aria-hidden="true"
-                className="block size-6 group-data-open:hidden"
+                className="block h-6 w-6 group-data-open:hidden"
               />
               <XMarkIcon
                 aria-hidden="true"
-                className="hidden size-6 group-data-open:block"
+                className="hidden h-6 w-6 group-data-open:block"
               />
             </DisclosureButton>
           </div>
@@ -56,11 +55,10 @@ export default function Navbar() {
               <div className="flex space-x-4">
                 {navigation.map((item) => {
                   const isActive = location.pathname === item.href;
-
                   return (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className={classNames(
                         isActive
                           ? "bg-gray-900 text-white"
@@ -69,7 +67,7 @@ export default function Navbar() {
                       )}
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   );
                 })}
               </div>
@@ -88,12 +86,11 @@ export default function Navbar() {
         <div className="space-y-1 px-2 pt-2 pb-3">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href;
-
             return (
               <DisclosureButton
                 key={item.name}
-                as="a"
-                href={item.href}
+                as={Link} // promenjeno sa "a" na Link
+                to={item.href} // promenjeno sa href na to
                 className={classNames(
                   isActive
                     ? "bg-gray-900 text-white"

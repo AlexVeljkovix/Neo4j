@@ -1,32 +1,18 @@
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GamesList from "../components/Games/GamesList";
-import { getGames } from "../api/gameApi";
 import CreateGameForm from "../components//Games/CreateGameForm";
+import { useGame } from "../context/GameContext";
+import { useSearch } from "../context/SearchContext";
 
 export default function GamesPage() {
-  const [games, setGames] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { games, loading, error } = useGame();
   const [showForm, setShowForm] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      getGames()
-        .then((data) => {
-          setGames(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setError(err.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }, 1000);
-  }, []);
-
+  const { searchTerm } = useSearch();
+  const filteredGames = games.filter((g) =>
+    g.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <div className="mx-6 my-4 min-h-[80vh]">
       {/* Naslov i dugme */}
@@ -76,7 +62,7 @@ export default function GamesPage() {
       {!loading && !error && (
         <>
           {games.length > 0 ? (
-            <GamesList games={games} />
+            <GamesList games={filteredGames} />
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-gray-400">
               <svg

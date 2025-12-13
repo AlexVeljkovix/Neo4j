@@ -1,8 +1,11 @@
 import { deleteAuthor } from "../../api/authorApi";
-
+import { Link } from "react-router-dom";
+import { useAuthor } from "../../context/AuthorContext";
 const AuthorCard = ({ author }) => {
-  const handleClick = () => {
-    deleteAuthor(author.id);
+  const { removeAuthor } = useAuthor();
+  const handleClick = async () => {
+    await deleteAuthor(author.id);
+    removeAuthor(author.id);
   };
   return (
     <div className="bg-neutral-900/10 p-6 border border-gray-700 rounded-lg shadow-md h-60 flex flex-col">
@@ -19,12 +22,12 @@ const AuthorCard = ({ author }) => {
       <p className="text-gray-400 text-sm mb-3">Država: {author.country}</p>
 
       <div className="mt-auto flex justify-between">
-        <a
-          href={`/authors/${author.Id}`}
+        <Link
+          to={`/authors/${author.id}`}
           className="inline-flex items-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 shadow font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none"
         >
           Pogledaj detalje
-        </a>
+        </Link>
         <button
           onClick={handleClick}
           className="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-500 shadow font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none hover: cursor-pointer"

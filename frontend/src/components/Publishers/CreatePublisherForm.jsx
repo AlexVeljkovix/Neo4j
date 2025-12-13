@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
 import { createPublisher } from "../../api/publisherApi";
+import { usePublishers } from "../../context/PublisherContext";
 
 const CreatePublisherForm = ({ setShowForm }) => {
   const [name, setName] = useState("");
   const [country, setCountry] = useState("");
-  const submitForm = (e) => {
+  const { addPublisher } = usePublishers();
+  const submitForm = async (e) => {
     e.preventDefault();
-    createPublisher({
+    const publisher = await createPublisher({
       name: name,
       country: country,
-    }).then((res) => {
-      console.log(res);
-      setShowForm(false);
     });
+    addPublisher(publisher);
+    setShowForm(false);
   };
 
   return (
@@ -20,7 +21,7 @@ const CreatePublisherForm = ({ setShowForm }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-xl font-semibold mb-4">Dodaj novog izdavaca</h2>
 
-        <form className="flex flex-col gap-3">
+        <form onSubmit={submitForm} className="flex flex-col gap-3">
           <input
             type="text"
             onChange={(e) => setName(e.target.value)}
@@ -45,7 +46,6 @@ const CreatePublisherForm = ({ setShowForm }) => {
 
             <button
               type="submit"
-              onClick={submitForm}
               className="px-4 py-2 bg-gray-800 hover:bg-gray-700 hover:cursor-pointer text-white rounded"
             >
               Sačuvaj

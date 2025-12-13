@@ -4,6 +4,7 @@ import { createGame } from "../../api/gameApi";
 import { getMechanics } from "../../api/mechanicApi";
 import { getAuthors } from "../../api/authorApi";
 import { getPublishers } from "../../api/publisherApi";
+import { useGame } from "../../context/GameContext";
 
 const CreateGameForm = ({ setShowForm }) => {
   const [title, setTitle] = useState("");
@@ -17,7 +18,7 @@ const CreateGameForm = ({ setShowForm }) => {
   const [mechanicsData, setMechanicsData] = useState([]);
   const [authorsData, setAuthorsData] = useState([]);
   const [publishersData, setPublishersData] = useState([]);
-
+  const { addGame } = useGame();
   const loadFormData = async () => {
     try {
       const [mechanicsData, authorsData, publishersData] = await Promise.all([
@@ -56,6 +57,7 @@ const CreateGameForm = ({ setShowForm }) => {
       publisherId: publisher,
     }).then((res) => {
       console.log(res);
+      addGame(res);
       setShowForm(false);
     });
   };
@@ -69,7 +71,7 @@ const CreateGameForm = ({ setShowForm }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-xl font-semibold mb-4">Dodaj novu igru</h2>
 
-        <form className="flex flex-col gap-3">
+        <form onSubmit={submitForm} className="flex flex-col gap-3">
           <input
             type="text"
             onChange={(e) => setTitle(e.target.value)}
@@ -141,7 +143,6 @@ const CreateGameForm = ({ setShowForm }) => {
 
             <button
               type="submit"
-              onClick={submitForm}
               className="px-4 py-2 bg-gray-800 hover:bg-gray-700 hover:cursor-pointer text-white rounded"
             >
               Sačuvaj

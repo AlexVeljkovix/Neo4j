@@ -1,8 +1,9 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import { finishRental } from "../../api/rentalApi";
+import { useRental } from "../../context/RentalContext";
 const RentalCard = ({ rental }) => {
+  const { removeRental } = useRental();
   const handleClick = () => {
-    console.log(rental.id);
     finishRental(rental.id);
   };
 
@@ -20,12 +21,12 @@ const RentalCard = ({ rental }) => {
         {new Date(rental.rentalDate).toLocaleDateString("sr-RS")}
       </p>
       <div className="mt-auto flex justify-between">
-        <a
-          href={`/rentals/${rental.Id}`}
+        <Link
+          to={`/rentals/${rental.id}`}
           className="inline-flex text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 shadow font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none"
         >
           Pogledaj detalje
-        </a>
+        </Link>
         <button
           onClick={handleClick}
           className="inline-flex items-center text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-500 shadow font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none hover: cursor-pointer"

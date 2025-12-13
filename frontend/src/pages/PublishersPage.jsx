@@ -4,26 +4,15 @@ import CreatePublisherForm from "../components/Publishers/CreatePublisherForm";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { getPublishers } from "../api/publisherApi";
 import PublishersList from "../components/Publishers/PublishersList";
-
+import { usePublishers } from "../context/PublisherContext";
+import { useSearch } from "../context/SearchContext";
 const PublishersPage = () => {
-  const [publishers, setPublishers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { publishers, loading, error } = usePublishers();
   const [showForm, setShowForm] = useState(false);
-
-  useEffect(() => {
-    getPublishers()
-      .then((data) => {
-        setPublishers(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  const { searchTerm } = useSearch();
+  const filteredPublishers = publishers.filter((p) =>
+    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <div className="mx-6 my-4 min-h-[80vh]">
       {/* Naslov i dugme */}
@@ -73,7 +62,7 @@ const PublishersPage = () => {
       {!loading && !error && (
         <>
           {publishers.length > 0 ? (
-            <PublishersList publishers={publishers} />
+            <PublishersList publishers={filteredPublishers} />
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-gray-400">
               <svg

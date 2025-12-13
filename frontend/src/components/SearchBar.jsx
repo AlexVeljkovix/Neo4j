@@ -1,9 +1,14 @@
+import { useSearch } from "../context/SearchContext";
+
 export default function SearchBar() {
+  const { searchTerm, setSearchTerm } = useSearch();
   return (
     <div>
       <div className="sm:w-48 mt-2">
         <div className="flex items-center rounded-md bg-white/5 pl-3 outline-1 -outline-offset-1 outline-gray-600 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-500">
           <input
+            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
             id="search"
             name="search"
             type="text"
