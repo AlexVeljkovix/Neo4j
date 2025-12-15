@@ -192,7 +192,7 @@ namespace backend.Repos
                                                                     r.ReturnDate=datetime($date)
                                 WITH r
                                 MATCH (g)<-[:RENTED_GAME]-(r) SET g.AvailableUnits=g.AvailableUnits+1", new {id, date=DateTime.Now});
-            return rental;
+            return await GetRentalById(id);
         }
         public async Task<RentalWithGameDTO> DeleteRentalRecord(string id)
         {

@@ -38,7 +38,8 @@ namespace backend.Services
             
                 return await _rentalRepo.CreateRentalRecord(new Rental
                 {
-                    RentalDate = rental.RentalDate,
+                    RentalDate = DateTime.Now,
+                    Active=true,
                     PersonName = rental.PersonName,
                     PersonPhoneNumber = rental.PersonPhoneNumber,
                     PersonJMBG = rental.PersonJMBG,

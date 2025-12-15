@@ -231,47 +231,54 @@ namespace backend.Repos
             return games;
         }
 
-        public async Task<Game> CreateGame(Game game, List<string> mechanicIds, string authorId, string publisherId)
-        {
-            await using var session = _driver.AsyncSession();
+       public async Task<Game> CreateGame(
+    Game game,
+    List<string> mechanicIds,
+    string authorId,
+    string publisherId)
+{
+    await using var session = _driver.AsyncSession();
 
-            await session.RunAsync(@"
-           CREATE (g:Game {
-                Id:$Id,
-                Title:$Title,
-                Description:$Description,
-                Difficulty:$Difficulty,
-                AvailableUnits:$AvailableUnits
-            })
-            WITH g
-            MATCH (a:Author {Id:$authorId})
-            MERGE (a)-[:CREATED]->(g)
-            WITH g
-            MATCH (p:Publisher {Id:$publisherId})
-            MERGE (p)-[:PUBLISHED]->(g)
-        ",
-                new
-                {
-                    game.Id,
-                    game.Title,
-                    game.Description,
-                    game.Difficulty,
-                    game.AvailableUnits,
-                    authorId,
-                    publisherId
-                });
+    // 1️⃣ CREATE game + relacije
+    await session.RunAsync(@"
+        CREATE (g:Game {
+            Id:$Id,
+            Title:$Title,
+            Description:$Description,
+            Difficulty:$Difficulty,
+            AvailableUnits:$AvailableUnits
+        })
+        WITH g
+        MATCH (a:Author {Id:$authorId})
+        MERGE (a)-[:CREATED]->(g)
+        WITH g
+        MATCH (p:Publisher {Id:$publisherId})
+        MERGE (p)-[:PUBLISHED]->(g)
+    ",
+    new
+    {
+        game.Id,
+        game.Title,
+        game.Description,
+        game.Difficulty,
+        game.AvailableUnits,
+        authorId,
+        publisherId
+    });
 
-            foreach (var mechanicId in mechanicIds)
-            {
-                await session.RunAsync(@"
+    foreach (var mechanicId in mechanicIds)
+    {
+        await session.RunAsync(@"
             MATCH (g:Game {Id:$gameId})
             MATCH (m:Mechanic {Id:$mechanicId})
             MERGE (g)-[:HAS_MECHANIC]->(m)
-            ", new { gameId = game.Id, mechanicId });
-            }
+        ", new { gameId = game.Id, mechanicId });
+    }
 
-            return game;
-        }
+    // 2️⃣ 🔥 NAJBITNIJE: ponovo pročitaj iz baze
+    return await GetGameById(game.Id);
+}
+
 
 
 

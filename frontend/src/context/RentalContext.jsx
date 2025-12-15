@@ -31,6 +31,20 @@ export const RentalProvider = ({ children }) => {
     setRentals((prev) => prev.filter((r) => r.id !== id));
   };
 
+  const finishRentalC = (id) => {
+    setRentals((prev) =>
+      prev.map((r) =>
+        r.id === id
+          ? {
+              ...r,
+              active: false,
+              returnDate: new Date().toISOString(),
+            }
+          : r
+      )
+    );
+  };
+
   return (
     <RentalContext.Provider
       value={{
@@ -39,6 +53,7 @@ export const RentalProvider = ({ children }) => {
         error,
         addRental,
         removeRental,
+        finishRentalC,
       }}
     >
       {children}

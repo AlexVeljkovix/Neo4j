@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { createRental } from "../../api/rentalApi";
 import { getAvailableGames } from "../../api/gameApi";
 import { useRental } from "../../context/RentalContext";
+import { useGame } from "../../context/GameContext";
 
 const CreateRentalForm = ({ setShowForm, defaultGame }) => {
   const [gamesData, setGamesData] = useState([]);
@@ -9,7 +10,10 @@ const CreateRentalForm = ({ setShowForm, defaultGame }) => {
   const [JMBG, setJMBG] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [gameId, setGameId] = useState("");
+
   const { addRental } = useRental();
+  const { updateAvailableUnits, games } = useGame();
+
   useEffect(() => {
     if (defaultGame != null) {
       setGameId(defaultGame.id);
@@ -18,17 +22,26 @@ const CreateRentalForm = ({ setShowForm, defaultGame }) => {
         setGamesData(data.sort((a, b) => a.title.localeCompare(b.title, "sr")));
       });
     }
-  }, []);
+  }, [defaultGame]);
 
   const submitForm = (e) => {
     e.preventDefault();
+    const selectedGame =
+      defaultGame ||
+      gamesData.find((g) => g.id === gameId) ||
+      games.find((g) => g.id === gameId);
+
     createRental({
       personName: name,
       personPhoneNumber: phoneNumber,
       personJMBG: JMBG,
       gameId: gameId,
-    }).then((res) => {
-      addRental(data);
+    }).then((data) => {
+      addRental({
+        ...data,
+        gameName: selectedGame.title,
+      });
+      updateAvailableUnits(gameId, -1);
       setShowForm(false);
     });
   };

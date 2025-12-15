@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getRentalById, finishRental } from "../api/rentalApi";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-
+import { useRental } from "../context/RentalContext";
+import { useGame } from "../context/GameContext";
 const RentalDetailsPage = () => {
   const { id } = useParams();
+  const { finishRentalC } = useRental();
+  const { updateAvailableUnits } = useGame();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [rental, setRental] = useState(null);
@@ -23,14 +26,13 @@ const RentalDetailsPage = () => {
   const handleFinishRental = async () => {
     try {
       setLoading(true);
-      const updated = await finishRental(id);
-
-      // API vraća ažuriran rental, ali ako ne — sam ću ažurirati:
+      await finishRental(id);
+      finishRentalC(id);
+      updateAvailableUnits(rental.gameId, +1);
       setRental((prev) => ({
         ...prev,
         active: false,
         returnDate: new Date().toISOString(),
-        ...updated, // ako API ipak vraća objekat
       }));
     } catch (err) {
       console.error(err);

@@ -44,6 +44,7 @@ const GameCard = ({ game }) => {
           Izdavač: {game.publisher.name}
         </p>
       )}
+      <p className="text-gray-400 text-sm mb-1">Težina: {game.difficulty}</p>
       <p className="text-gray-400 text-sm mb-3">
         Dostupno: {game.availableUnits}
       </p>

@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
-import { finishRental } from "../../api/rentalApi";
+import { deleteRental, finishRental } from "../../api/rentalApi";
 import { useRental } from "../../context/RentalContext";
-const RentalCard = ({ rental }) => {
-  const { removeRental } = useRental();
+import { useGame } from "../../context/GameContext";
+const RentalCard = ({ rental, active }) => {
+  const { removeRental, finishRentalC } = useRental();
+  const { updateAvailableUnits } = useGame();
   const handleClick = () => {
     finishRental(rental.id);
+    finishRentalC(rental.id);
+    updateAvailableUnits(rental.gameId, +1);
+  };
+  const handleDelete = () => {
+    deleteRental(rental.id);
+    removeRental(rental.id);
   };
 
   return (
@@ -27,12 +35,21 @@ const RentalCard = ({ rental }) => {
         >
           Pogledaj detalje
         </Link>
-        <button
-          onClick={handleClick}
-          className="inline-flex items-center text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-500 shadow font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none hover: cursor-pointer"
-        >
-          Vrati igru
-        </button>
+        {active ? (
+          <button
+            onClick={handleClick}
+            className="inline-flex items-center text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-500 shadow font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none hover: cursor-pointer"
+          >
+            Vrati igru
+          </button>
+        ) : (
+          <button
+            onClick={handleDelete}
+            className="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-500 shadow font-medium rounded-lg text-sm px-4 py-2.5 focus:outline-none hover: cursor-pointer"
+          >
+            Obriši
+          </button>
+        )}
       </div>
     </div>
   );

@@ -72,7 +72,7 @@ namespace backend.Controllers
 
             var created = await _rentalService.CreateRentalRecord(rental);
             return Ok(created);
-            
+
         }
 
         [HttpPut("finish/{id}")]
