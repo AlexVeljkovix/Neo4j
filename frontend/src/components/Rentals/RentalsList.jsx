@@ -8,7 +8,7 @@ const RentalsList = ({ rentals }) => {
           key={rental.id}
           className="bg-gray-800 rounded-lg shadow-md p-4 text-white hover:bg-gray-700 transition"
         >
-          <RentalCard rental={rental} />
+          <RentalCard rental={rental} active={rental.active} />
         </div>
       ))}
     </div>
