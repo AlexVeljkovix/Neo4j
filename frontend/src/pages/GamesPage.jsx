@@ -15,7 +15,6 @@ export default function GamesPage() {
   );
   return (
     <div className="mx-6 my-4 min-h-[80vh]">
-      {/* Naslov i dugme */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
         <h2 className="text-2xl font-bold sm:text-3xl sm:tracking-tight mb-4 sm:mb-0">
           Sve dostupne igre
@@ -30,7 +29,6 @@ export default function GamesPage() {
         </button>
       </div>
 
-      {/* LOADING - SKELETON */}
       {loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -47,7 +45,6 @@ export default function GamesPage() {
         </div>
       )}
 
-      {/* ERROR */}
       {!loading && error && (
         <div className="flex items-start gap-3 bg-red-900/20 border border-red-700 text-red-300 px-4 py-3 rounded-lg mb-6">
           <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-red-400" />

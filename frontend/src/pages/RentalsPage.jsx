@@ -8,20 +8,18 @@ import { useRental } from "../context/RentalContext";
 const RentalsPage = () => {
   const { rentals, loading, error } = useRental();
   const [showForm, setShowForm] = useState(false);
-  const [showActiveOnly, setShowActiveOnly] = useState(true); // toggle state
+  const [showActiveOnly, setShowActiveOnly] = useState(true);
   const filteredRentals = showActiveOnly
     ? rentals.filter((r) => r.active === true)
     : rentals;
   return (
     <div className="mx-6 my-4 min-h-[80vh]">
-      {/* Naslov, toggle i dugme */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
         <h2 className="text-2xl font-bold sm:text-3xl sm:tracking-tight mb-4 sm:mb-0">
           Sva iznajmljivanja
         </h2>
 
         <div className="flex items-center gap-2 sm:gap-4">
-          {/* Toggle za aktivna/sva iznajmljivanja */}
           <div className="flex items-center gap-2">
             <span className="text-black font-bold">Sva</span>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -37,7 +35,6 @@ const RentalsPage = () => {
             <span className="text-black font-bold">Aktivna</span>
           </div>
 
-          {/* Dugme za novo iznajmljivanje */}
           <button
             onClick={() => setShowForm(true)}
             type="button"
@@ -49,7 +46,6 @@ const RentalsPage = () => {
         </div>
       </div>
 
-      {/* LOADING - SKELETON */}
       {loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -66,7 +62,6 @@ const RentalsPage = () => {
         </div>
       )}
 
-      {/* ERROR */}
       {!loading && error && (
         <div className="flex items-start gap-3 bg-red-900/20 border border-red-700 text-red-300 px-4 py-3 rounded-lg mb-6">
           <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-red-400" />

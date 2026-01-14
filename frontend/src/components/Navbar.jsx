@@ -26,7 +26,6 @@ export default function Navbar() {
     <Disclosure as="nav" className="relative bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
-          {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500">
               <span className="sr-only">Open main menu</span>
@@ -41,7 +40,6 @@ export default function Navbar() {
             </DisclosureButton>
           </div>
 
-          {/* Logo + Desktop navigation */}
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
               <img
@@ -74,14 +72,12 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Search */}
           <div className="flex shrink max-w-52 mx-4">
             <SearchBar />
           </div>
         </div>
       </div>
 
-      {/* Mobile navigation */}
       <DisclosurePanel className="sm:hidden">
         <div className="space-y-1 px-2 pt-2 pb-3">
           {navigation.map((item) => {
@@ -89,8 +85,8 @@ export default function Navbar() {
             return (
               <DisclosureButton
                 key={item.name}
-                as={Link} // promenjeno sa "a" na Link
-                to={item.href} // promenjeno sa href na to
+                as={Link}
+                to={item.href}
                 className={classNames(
                   isActive
                     ? "bg-gray-900 text-white"

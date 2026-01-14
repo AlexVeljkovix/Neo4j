@@ -16,7 +16,6 @@ const GameDetailsPage = () => {
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  // useEffect za slične igre
   useEffect(() => {
     if (!game || !game.mechanics?.length) {
       setSimilarGames([]);
@@ -56,7 +55,6 @@ const GameDetailsPage = () => {
 
   return (
     <div className="p-8 text-white flex flex-col md:flex-row gap-6">
-      {/* ERROR ALERT */}
       {error && (
         <div className="flex items-start gap-3 bg-red-900/20 border border-red-700 text-red-300 px-4 py-3 rounded-lg mb-6 w-full">
           <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-red-400" />
@@ -69,12 +67,10 @@ const GameDetailsPage = () => {
         </div>
       )}
 
-      {/* Glavni sadržaj */}
       <div className="flex-1">
         <div className="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
           <div className="flex justify-between">
             <h1 className="text-4xl font-bold mb-4">{game.title}</h1>
-            {/* Dugme koje otvara formu */}
             {game.availableUnits > 0 && (
               <button
                 onClick={() => setShowForm(true)}
@@ -99,7 +95,6 @@ const GameDetailsPage = () => {
           </p>
         </div>
 
-        {/* Carousel sa sličnim igrama */}
         {similarGames.length > 0 && (
           <div className="mt-6">
             <h2 className="text-3xl text-black font-bold mb-2">Slične igre</h2>
@@ -116,7 +111,6 @@ const GameDetailsPage = () => {
         )}
       </div>
 
-      {/* Sidebar */}
       <div className="w-full md:w-64 bg-gray-800 p-4 rounded-lg shadow-md shrink-0 flex flex-col gap-4">
         {game.author && (
           <div>
@@ -152,7 +146,6 @@ const GameDetailsPage = () => {
         )}
       </div>
 
-      {/* MODAL – Forma za iznajmljivanje */}
       {showForm && (
         <CreateRentalForm setShowForm={setShowForm} defaultGame={game} />
       )}

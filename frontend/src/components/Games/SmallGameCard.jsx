@@ -1,4 +1,3 @@
-// src/components/Games/SmallGameCard.jsx
 import { Link } from "react-router-dom";
 
 const SmallGameCard = ({ game }) => {

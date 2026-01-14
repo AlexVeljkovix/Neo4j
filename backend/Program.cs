@@ -3,22 +3,22 @@ using backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddControllers();
 
-// ==== CORS ====
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173") // tvoj React frontend
+            policy.WithOrigins("http://localhost:5173") 
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
 });
 
-// ==== Neo4j Driver ====
+
 builder.Services.AddSingleton<Neo4jDriverService>(sp =>
     new Neo4jDriverService(
         "bolt://localhost:7687",
@@ -27,7 +27,6 @@ builder.Services.AddSingleton<Neo4jDriverService>(sp =>
     )
 );
 
-// ==== Repozitorijumi i servisi ====
 
 builder.Services.AddScoped<IAuthorRepo, AuthorRepo>();
 builder.Services.AddScoped<AuthorService>();
@@ -44,22 +43,20 @@ builder.Services.AddScoped<GameService>();
 builder.Services.AddScoped<IRentalRepo, RentalRepo>();
 builder.Services.AddScoped<RentalService>();
 
-// ==== Swagger ====
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
 
-// ==== Enable CORS ====
 app.UseCors("AllowReactApp");
 
 app.UseAuthorization();

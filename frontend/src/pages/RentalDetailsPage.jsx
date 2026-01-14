@@ -42,16 +42,12 @@ const RentalDetailsPage = () => {
     }
   };
 
-  /* ---------------------------- LOADING SKELETON ---------------------------- */
-
   if (loading)
     return (
       <div className="p-8 text-white">
         <div className="animate-pulse bg-gray-800/50 p-6 rounded-2xl w-full h-60" />
       </div>
     );
-
-  /* ---------------------------------- ERROR --------------------------------- */
 
   if (error)
     return (
@@ -61,8 +57,6 @@ const RentalDetailsPage = () => {
       </div>
     );
 
-  /* ------------------------------ NO RENTAL -------------------------------- */
-
   if (!rental)
     return (
       <div className="p-8 text-gray-400">
@@ -70,12 +64,9 @@ const RentalDetailsPage = () => {
       </div>
     );
 
-  /* --------------------------------- CONTENT -------------------------------- */
-
   return (
     <div className="p-8 max-w-3xl mx-auto text-white">
       <div className="bg-gray-800 p-8 rounded-2xl shadow-md border border-gray-700">
-        {/* Header + Status */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Detalji iznajmljivanja</h1>
 
@@ -90,7 +81,6 @@ const RentalDetailsPage = () => {
           </span>
         </div>
 
-        {/* Info grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-300">
           <div>
             <p className="text-sm text-gray-400">Ime osobe</p>
@@ -123,9 +113,7 @@ const RentalDetailsPage = () => {
           </div>
         </div>
 
-        {/* Actions */}
         <div className="mt-8 flex justify-between">
-          {/* Vrati igru */}
           {rental.active && (
             <button
               onClick={handleFinishRental}
@@ -135,7 +123,6 @@ const RentalDetailsPage = () => {
             </button>
           )}
 
-          {/* Link to game */}
           <Link
             to={`/games/${rental.gameId}`}
             className="px-6 py-2 bg-gray-700 rounded-xl text-white font-semibold hover:bg-gray-600 transition border border-gray-600"

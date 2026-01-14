@@ -52,7 +52,6 @@ namespace backend.Repos
 
             await cursor.ForEachAsync(record =>
             {
-                // --- MAP PUBLISHER ---
                 if (publisher == null)
                 {
                     var pNode = record["p"].As<INode>();
@@ -69,7 +68,6 @@ namespace backend.Repos
                 if (!(record["g"] is INode gNode))
                     return;
 
-                // --- MAP GAME ---
                 string gameId = gNode.Properties["Id"].As<string>();
                 if (!gamesDict.TryGetValue(gameId, out var game))
                 {
@@ -87,7 +85,6 @@ namespace backend.Repos
                     gamesDict.Add(gameId, game);
                 }
 
-                // --- MAP AUTHOR ---
                 if (record["a"] is INode aNode)
                 {
                     game.Author = new Author
@@ -131,7 +128,6 @@ namespace backend.Repos
 
             await cursor.ForEachAsync(record =>
             {
-                // 1) MAP PUBLISHER
                 var pNode = record["p"].As<INode>();
                 string publisherId = pNode.Properties["Id"].As<string>();
 
@@ -153,7 +149,6 @@ namespace backend.Repos
                 if (!(record["g"] is INode gNode))
                     return;
 
-                // 2) MAP GAME (bez duplikata)
 
                 string gameId = gNode.Properties["Id"].As<string>();
                 var game = publisher.Games.FirstOrDefault(g => g.Id == gameId);
@@ -252,7 +247,6 @@ namespace backend.Repos
 
             await cursor.ForEachAsync(record =>
             {
-                // --- MAP PUBLISHER ---
                 if (publisher == null)
                 {
                     var pNode = record["p"].As<INode>();
@@ -269,7 +263,6 @@ namespace backend.Repos
                 if (!(record["g"] is INode gNode))
                     return;
 
-                // --- MAP GAME ---
                 string gameId = gNode.Properties["Id"].As<string>();
                 if (!gamesDict.TryGetValue(gameId, out var game))
                 {
@@ -286,7 +279,6 @@ namespace backend.Repos
                     gamesDict.Add(gameId, game);
                 }
 
-                // --- MAP AUTHOR ---
                 if (record["a"] is INode aNode)
                 {
                     game.Author = new Author

@@ -46,14 +46,11 @@ const PublisherDetailsPage = () => {
 
   return (
     <div className="p-8 text-white flex flex-col gap-6">
-      {/* Publisher info */}
-
       <div className="bg-gray-800 p-6 rounded-lg shadow-md">
         <h1 className="text-4xl font-bold mb-2">{publisher.name}</h1>
         <p className="text-gray-300">Broj igara: {games.length}</p>
       </div>
 
-      {/* Lista igara */}
       {games.length > 0 ? (
         <>
           <h2 className="text-3xl font-bold mb-2 text-black">Igre izdavača</h2>
