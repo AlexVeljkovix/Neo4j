@@ -12,11 +12,33 @@ export async function Post(endpoint, body) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
+
+  const responseText = await res.text();
+  console.log(`POST ${endpoint} - Status: ${res.status}`);
+  console.log(`Response:`, responseText);
+
   if (!res.ok) {
-    console.log(body);
-    throw new Error(`HTTP error! Status: ${res.status}`);
+    throw new Error(
+      `HTTP error! Status: ${res.status}. Response: ${responseText}`
+    );
   }
-  return res.json();
+
+  if (!responseText || responseText.trim() === "") {
+    console.warn("Empty response from server");
+    return null;
+  }
+
+  try {
+    return JSON.parse(responseText);
+  } catch (error) {
+    console.error(
+      "Failed to parse JSON:",
+      error,
+      "Raw response:",
+      responseText
+    );
+    throw new Error(`Invalid JSON response: ${responseText.substring(0, 100)}`);
+  }
 }
 
 export async function Put(endpoint, body) {

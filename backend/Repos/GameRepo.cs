@@ -239,7 +239,6 @@ namespace backend.Repos
 {
     await using var session = _driver.AsyncSession();
 
-    // 1️⃣ CREATE game + relacije
     await session.RunAsync(@"
         CREATE (g:Game {
             Id:$Id,
@@ -275,7 +274,6 @@ namespace backend.Repos
         ", new { gameId = game.Id, mechanicId });
     }
 
-    // 2️⃣ 🔥 NAJBITNIJE: ponovo pročitaj iz baze
     return await GetGameById(game.Id);
 }
 

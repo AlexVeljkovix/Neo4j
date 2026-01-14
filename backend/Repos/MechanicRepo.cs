@@ -36,23 +36,22 @@ namespace backend.Repos
 
         public async Task<Mechanic> GetMechanicById(string id)
         {
-            List<Mechanic> mechanics = new List<Mechanic>();
             await using var session = _driver.AsyncSession();
-            var cursor = await session.RunAsync("MATCH (m:Mechanic {Id:$Id}) RETURN m", 
+            var cursor = await session.RunAsync("MATCH (m:Mechanic {Id:$id}) RETURN m", 
                 new {id});
 
-            await cursor.ForEachAsync(record =>
+            if (await cursor.FetchAsync())
             {
-                var node = record["m"].As<INode>();
-                mechanics.Add(new Mechanic
+                var node = cursor.Current["m"].As<INode>();
+                return new Mechanic
                 {
                     Id = node.Properties["Id"].As<string>(),
                     Name = node.Properties["Name"].As<string>()
-                });
+                };
 
-            });
-
-            return mechanics.FirstOrDefault();
+            }
+            return null;
+   
         }
 
         public async Task<Mechanic> GetMechanicByName(string name)
