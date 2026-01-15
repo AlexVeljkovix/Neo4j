@@ -3,16 +3,8 @@
   "WorkspaceRootPath": "D:\\Fakultet\\IV Godina\\Napredne baze podataka\\Projekti\\Neo4j\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EAA18DB0-3176-4880-A222-0F2A3A7815FA}|backend.csproj|d:\\fakultet\\iv godina\\napredne baze podataka\\projekti\\neo4j\\backend\\repos\\mechanicrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EAA18DB0-3176-4880-A222-0F2A3A7815FA}|backend.csproj|solutionrelative:repos\\mechanicrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EAA18DB0-3176-4880-A222-0F2A3A7815FA}|backend.csproj|d:\\fakultet\\iv godina\\napredne baze podataka\\projekti\\neo4j\\backend\\repos\\gamerepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EAA18DB0-3176-4880-A222-0F2A3A7815FA}|backend.csproj|solutionrelative:repos\\gamerepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EAA18DB0-3176-4880-A222-0F2A3A7815FA}|backend.csproj|d:\\fakultet\\iv godina\\napredne baze podataka\\projekti\\neo4j\\backend\\controllers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EAA18DB0-3176-4880-A222-0F2A3A7815FA}|backend.csproj|solutionrelative:controllers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EAA18DB0-3176-4880-A222-0F2A3A7815FA}|backend.csproj|d:\\fakultet\\iv godina\\napredne baze podataka\\projekti\\neo4j\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAA18DB0-3176-4880-A222-0F2A3A7815FA}|backend.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,8 +14,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Fakultet\\IV Godina\\Napredne baze podataka\\Projekti\\Neo4j\\backend\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\Fakultet\\IV Godina\\Napredne baze podataka\\Projekti\\Neo4j\\backend\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAADIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-15T15:07:33.817Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
@@ -31,45 +36,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MechanicRepo.cs",
-              "DocumentMoniker": "D:\\Fakultet\\IV Godina\\Napredne baze podataka\\Projekti\\Neo4j\\backend\\Repos\\MechanicRepo.cs",
-              "RelativeDocumentMoniker": "Repos\\MechanicRepo.cs",
-              "ToolTip": "D:\\Fakultet\\IV Godina\\Napredne baze podataka\\Projekti\\Neo4j\\backend\\Repos\\MechanicRepo.cs",
-              "RelativeToolTip": "Repos\\MechanicRepo.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAowDQAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-14T18:38:20.293Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "GameController.cs",
-              "DocumentMoniker": "D:\\Fakultet\\IV Godina\\Napredne baze podataka\\Projekti\\Neo4j\\backend\\Controllers\\GameController.cs",
-              "RelativeDocumentMoniker": "Controllers\\GameController.cs",
-              "ToolTip": "D:\\Fakultet\\IV Godina\\Napredne baze podataka\\Projekti\\Neo4j\\backend\\Controllers\\GameController.cs",
-              "RelativeToolTip": "Controllers\\GameController.cs",
-              "ViewState": "AgIAAGYAAAAAAAAAAAAIwH8AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-14T18:17:04.16Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "GameRepo.cs",
-              "DocumentMoniker": "D:\\Fakultet\\IV Godina\\Napredne baze podataka\\Projekti\\Neo4j\\backend\\Repos\\GameRepo.cs",
-              "RelativeDocumentMoniker": "Repos\\GameRepo.cs",
-              "ToolTip": "D:\\Fakultet\\IV Godina\\Napredne baze podataka\\Projekti\\Neo4j\\backend\\Repos\\GameRepo.cs",
-              "RelativeToolTip": "Repos\\GameRepo.cs",
-              "ViewState": "AgIAAKcAAAAAAAAAAAAIwPEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-14T18:16:42.357Z",
-              "EditorCaption": ""
             }
           ]
         }
